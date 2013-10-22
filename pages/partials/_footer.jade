@@ -1,0 +1,10 @@
+
+footer.page-footer(class="page-#{pageName}")
+  .container
+    ul.list-inline.text-center
+      links = [{name: "联系我们", href: "contact.html"}, {name: "服务政策", href: ""}, {name: "入驻企业"}, {name: "移动APP"}]
+      each link in links
+        li
+          a(href=link.href)= link.name
+    p.text-center Copyright 2013 HIPARK 版权声明
+
