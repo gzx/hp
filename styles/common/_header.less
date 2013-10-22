@@ -1,0 +1,43 @@
+
+.page-header {
+  // 去除 Bootstrap 设置的类
+  padding-bottom: 0;
+  border-bottom: none;
+
+  .single-page-logo {
+    .ir;
+    .block-center;
+    display: block;
+    margin-bottom: 30px;
+    width: 300px;
+    height: 80px;
+    background: transparent url('../images/single_page_logo.png') no-repeat center center;
+  }
+
+  .menu-list {
+    overflow: hidden;
+
+    ul {
+      margin-top: 0;
+      margin-bottom: 0;
+      border-top: 1px solid #eaeaea;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    a {
+      color: #c6c6c6;
+    }
+
+    li {
+      width: ((@container-desktop - 30px) / 7);
+
+      > a {
+        padding-top: 25px;
+        padding-bottom: 25px;
+        display: block;
+        text-align: center;
+      }
+    }
+  }
+}
+
