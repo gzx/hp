@@ -1,0 +1,30 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/contact.css")
+
+block title
+  title 联系我们
+
+block content
+  pageName = "contact"
+
+  include partials/_header.jade
+
+  img.page-banner(src="images/contact/banner.png")
+
+  ul.container.list-unstyled.contact-list
+    each contact in contacts
+      li.col-md-6
+        .media
+          img.media-object.pull-left(src="#{contact.avatar}", width=140, height=140)
+          .media-body
+            p.media-heading= contact.name
+            ul.list-unstyled
+              each entry in [{id: 'tel', icon: 'glyphicon-phone-alt'}, {id: 'phone', icon: 'glyphicon-phone'}, {id: 'email', icon: 'glyphicon-envelope'}]
+                li
+                  i.glyphicon(class="#{entry.icon}")
+                  = contact[entry.id]
+
+  include partials/_footer.jade
+
