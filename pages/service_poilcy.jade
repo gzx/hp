@@ -1,0 +1,68 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/service_poilcy.css")
+
+block title
+  title 服务政策
+
+block content
+  pageName = "service-poilcy"
+
+  include partials/_header.jade
+
+  img.page-banner(src="images/service_poilcy/banner.png")
+
+  img.page-banner(src="images/service_poilcy/features.png")
+
+  .poilcy-area.container
+    ul.list-unstyled.poilcy-categories.col-md-3
+    script(id="categoryList", type='text/template').
+      {{^data}}<li>当前还没有更新任何相关政策</li>{{/data}}
+      {{#data}}
+        <li data-category-id="{{id}}">
+          <a href="javascript:;">{{name}}</a>
+        </li>
+      {{/data}}
+    ul.list-unstyled.poilcies.col-md-9
+    script(id="articleList", type='text/template').
+      {{^data}}<li>当前还没有更新任何相关政策</li>{{/data}}
+      {{#data}}
+        <li>
+          <a href="{{../linkArticle}}">{{name}}</a>
+          <time class="pull-right">{{../formatedTime}}</time>
+        </li>
+      {{/data}}
+    script(id="fetchListError", type='text/template')
+      <li>获取信息失败</li>
+
+  include partials/_footer.jade
+
+block append scripts
+  script(src="scripts/momentjs/moment.js")
+  script(src="scripts/momentjs/lang/zh-cn.js")
+  :coffee
+    renderArticleList = (category) ->
+      $poilcyContainer = $('.poilcies').spin()
+      requester.get('/articles', {category}).done (data) ->
+        formatedTime = -> moment(@publish_at).format('ll')
+        articleListHml = tmpl 'articleList', {data, formatedTime}
+        $poilcyContainer.spin(false).html articleListHml
+      .fail ->
+        $('.poilcies').html $('#fetchListError').html()
+
+    $categoryContainer = $('.poilcy-categories').on 'click', '> li', (event) ->
+      $categoryContainer.find('> li').removeClass 'active'
+      $clickElem = $(event.currentTarget).addClass 'active'
+      renderArticleList parseInt $clickElem.attr('data-category-id'), 10
+
+    requester.get('/articles/categories').done (data) ->
+      if reqconf.poilcyCategoryIds?
+        categories = (category for category in data when category.id in reqconf.poilcyCategoryIds)
+      else
+        categories = data
+      categoryListHtml = tmpl 'categoryList', {data: categories}
+      $('.poilcy-categories').html(categoryListHtml).find('> li').first().trigger 'click'
+    .fail ->
+      $('.poilcy-categories').html $('#fetchListError').html()
+

@@ -1,0 +1,29 @@
+@import '../_variables.less';
+
+.poilcy-area {
+  padding: 30px;
+  border-top: 1px solid @border-normal;
+  line-height: 35px;
+}
+
+.poilcy-categories {
+  padding-right: 50px;
+  font-size: 18px;
+
+  > li {
+    border-bottom: 1px solid @border-normal;
+
+    > a {
+      display: block;
+    }
+
+    &.active > a {
+      color: @link-colro-active;
+    }
+  }
+}
+
+.poilcies {
+  min-height: 200px;
+}
+

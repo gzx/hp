@@ -30,6 +30,7 @@ do ->
   window.reqconf =
     urlRoot: "/api/apps/#{appid}"
     appid: appid
+    poilcyCategoryIds: [98, 99, 100, 101]
 
 do ->
   requester = (config) ->
