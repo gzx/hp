@@ -41,14 +41,13 @@ module.exports = (grunt) ->
           not grunt.util._(sysPath.basename filepath).startsWith '_'
 
     concat:
+      options: separator: ';'
       vendor:
-        options: separator: ';'
-        dist:
-          dest: 'public/scripts/vendor.js'
-          src: [
-            'bower_components/jquery/jquery.js'
-            'bower_components/bootstrap/js/transition.js'
-          ]
+        dest: 'public/scripts/vendor.js'
+        src: [
+          'bower_components/jquery/jquery.js'
+          'bower_components/bootstrap/js/transition.js'
+        ]
 
     copy:
       vendor:
@@ -90,6 +89,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-imagemin'
   grunt.loadNpmTasks 'grunt-contrib-connect'
 
-  grunt.registerTask 'build', ['coffee', 'less', 'jade', 'copy']
+  grunt.registerTask 'build', ['coffee', 'less', 'jade', 'copy', 'concat']
   grunt.registerTask 'default', ['build', 'watch']
 
