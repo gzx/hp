@@ -1,11 +1,112 @@
-!!!5
-head
-  meta(charset="UTF-8")
-  link(rel="stylesheet", type="text/css", href="styles/base.css")
-  title 首页
-body
-  h1 hello world !
 
-  script(src="script/vendor.js")
-  script(src="script/index.js")
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/index.css")
+
+block content
+  h1.header.ir HiPark
+  .body
+    ul.nav.nav-pills
+      li
+        a(href="javascript:").active 首页
+      li
+        a(href="javascript:") 新闻
+      li
+        a(href="javascript:") 园区介绍
+      li
+        a(href="javascript:") 服务政策
+      li
+        a(href="javascript:") 入驻企业
+      li
+        a(href="javascript:") 移动APP
+      li
+        a(href="javascript:") 社区
+
+    .section
+      .news.pull-right
+        h3 园区新闻
+        ul
+
+        script(id="articleList", data-tmpl-target=".news ul", type='text/template').
+          {{#list}}
+
+            <li class="media">
+              <a class="pull-left">
+                <img class="media-object" src="http://p3.zhimg.com/68/46/6846ddb9d4683e1889cdf264f329514b.png">
+              </a>
+              <div class="media-body">
+                <h4 class="media-heading">{{name}}</h4>
+                <p>
+                  {{../cleanContent}}
+                  <a href="{{../linkArticle}}" target="_blank">继续阅读</a>
+                </p>
+              </div>
+            </li>
+          {{/list}}
+
+      #carousel-generic.recommenations.carousel.slide
+        .carousel-inner
+
+        script(id="recommendationList", type='text/template').
+          {{#list}}
+            <div class="item">
+              <img src={{../fitImage}}>
+              <div class="carousel-caption">
+                <div class="heading">{{target.context.name}}</div>
+                <div class="content">{{../cleanRecommendations}}</div>
+              </div>
+            </div>
+          {{/list}}
+
+        a(href="#carousel-generic", data-slide="prev").carousel-control-left left
+        a(href="#carousel-generic", data-slide="next").carousel-control-right right
+
+    .section
+      ul.summary.list-unstyled.list-inline
+        li
+          h3 园区位置
+          p 关于园区文化的文字内容杭州园区文化生活港园文化介绍园区文化介绍园区文化生活港
+        li
+          h3 园区位置
+          p 关于园区文化的文字内容杭州园区文化生活港园文化介绍园区文化介绍园区文化生活港
+        li.last
+          h3 园区位置
+          p 关于园区文化的文字内容杭州园区文化生活港园文化介绍园区文化介绍园区文化生活港
+      .introduce.pull-right
+        h3 杭州湾生活港园区文化
+        p 关于园区文化的文字内容杭州湾生活港园区文化介港园区文化介绍文化介绍文化港园区文化介绍文化介绍文化港园区文化介绍文化介绍文化
+        a 更多园区介绍
+
+      ul.artwork.list-unstyled.list-inline
+        li
+          img(src="./images/index/artwork01.jpg")
+        li.last
+          img(src="./images/index/artwork02.jpg")
+    .section.articles
+      h3 园区的优秀服务政策
+      ul.list-unstyled.list-inline
+        li
+          .square
+          a(href="#", target="_blank") 创业投资企业管理暂行办法
+        li
+          .square
+          a(href="#", target="_blank") 国家科技支撑计划管理暂行办法
+        li
+          .square
+          a(href="#", target="_blank") 国家科技支撑计划管理暂行办法
+        li
+          .square
+          a(href="#", target="_blank") 创业投资企业管理暂行办法
+
+    .section
+      img(src="./images/index/companies.png").companies
+    .section
+      img(src="./images/index/social.png").social
+        
+  include partials/_footer.jade
+    
+block append scripts
+  script(src="scripts/bs/carousel.js")
+  script(src="scripts/index.js")
 
