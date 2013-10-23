@@ -4,6 +4,7 @@ do ->
     window.moment.lang 'zh-cn'
 
   window.tmpl = (name, data) ->
+    data.linkArticle = -> "articles.html?id=#{@id}"
     templayed($("##{name}[type='text/template']").html()) data
 
 do ->
