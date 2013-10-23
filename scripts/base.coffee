@@ -4,6 +4,23 @@ do ->
     templayed($("##{name}[type='text/template']").html()) data
 
 do ->
+  $.fn.spin = (options) ->
+    options = $.extend {
+      color: '#555'
+      width: 4
+    }, options
+
+    @each (index, elem) =>
+      $elem = @eq index
+      spin = $elem.data('spin') or new Spinner options
+      if options is false
+        spin.stop()
+        $elem.removeData 'spin'
+      else
+        $elem.data 'spin', spin
+        spin.spin elem
+
+do ->
   appid = 102
 
   window.reqconf =
