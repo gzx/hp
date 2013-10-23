@@ -1,5 +1,9 @@
 
 do ->
+  window.tmpl = (name, data) ->
+    templayed($("##{name}[type='text/template']").html()) data
+
+do ->
   appid = 102
 
   window.reqconf =
