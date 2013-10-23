@@ -1,5 +1,8 @@
 
 do ->
+  if window.moment
+    window.moment.lang 'zh-cn'
+
   window.tmpl = (name, data) ->
     templayed($("##{name}[type='text/template']").html()) data
 

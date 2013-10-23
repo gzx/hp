@@ -54,7 +54,10 @@ module.exports = (grunt) ->
     copy:
       vendor:
         expand: true
+        cwd: 'bower_components/'
         src: [
+          'momentjs/moment.js'
+          'momentjs/lang/zh-cn.js'
         ]
         dest: 'public/scripts/'
       assets:
