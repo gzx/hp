@@ -23,6 +23,7 @@ module.exports = (grunt) ->
     jade:
       main:
         options:
+          pretty: true
           data: (dest, src) ->
             src = src[0]
             modulePath = src.replace sysPath.extname(src), ''
