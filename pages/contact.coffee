@@ -1,21 +1,11 @@
+
+defaultContact =
+  "name": "占位"
+  "avatar": ""
+  "phone": "00000000000"
+  "tel": "0000-00000000"
+  "email": "example@example.com"
+
 module.exports =
-  contacts: [
-    "name": "李天一"
-    "avatar": ""
-    "phone": 11111111111
-    "tel": "0571-66666666"
-    "email": "tianyi.li@gov.cn"
-  ,
-    "name": "李天一"
-    "avatar": ""
-    "phone": 11111111111
-    "tel": "0571-66666666"
-    "email": "tianyi.li@gov.cn"
-  ,
-    "name": "李天一"
-    "avatar": ""
-    "phone": 11111111111
-    "tel": "0571-66666666"
-    "email": "tianyi.li@gov.cn"
-  ]
+  contacts: (defaultContact for i in [0...8])
 
