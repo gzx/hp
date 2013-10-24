@@ -1,0 +1,108 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/news.css")
+
+block title
+  title 园区新闻
+
+block content
+  pageName = "news"
+
+  include partials/_header.jade
+
+  .container.body
+    ul.article-list.list-unstyled.col-md-9
+    script(id="articleList", data-tmpl-html=".article-list", type="text/template").
+      {{^articles}}该分类下暂时没有新闻{{/articles}}
+      {{#articles}}
+      <li>
+        <article>
+          <header>
+            <h1 class="article-title">{{name}}</h1>
+            <p class="article-meta">
+              <time>{{../formatedPublishTime}}</time>
+              {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
+            </p>
+          </header>
+          {{#renderImage}}
+          <section class="article-image">
+            <img src="{{image}}" width="670" height="300">
+          </section>
+          {{/renderImage}}
+          <section class="article-intro">
+            <p>{{{../cleanFirstParagraph}}}</p>
+            <p><a href="{{../linkArticle}}" class="article-more">继续阅读 >></a></p>
+          </section>
+          <footer class="article-share"></footer>
+        </article>
+      </li>
+      {{/articles}}
+
+    .aside.pull-right.col-md-3
+      .aside-module.category-list
+        h2.aside-module-heading 新闻分类
+        ul.list-unstyled
+        script(id="categoryList", data-tmpl-html=".category-list > ul.list-unstyled", type="text/template").
+          {{^categories}}<li>暂时没有任何分类</li>{{/categories}}
+          {{#categories}}
+            <li>
+              <a href="javascript:;" data-category-id="{{id}}">{{name}}</a>
+            </li>
+          {{/categories}}
+      .aside-module
+        h2.aside-module-heading
+          a(href="javascript:;")
+            | 媒体资料下载
+            i.glyphicon.glyphicon-download
+
+  script(id="fetchListError", type="text/template").
+    <li>获取信息失败</li>
+
+  include partials/_footer.jade
+
+block append scripts
+  script(src="scripts/momentjs/moment.js")
+  script(src="scripts/momentjs/lang/zh-cn.js")
+  :coffee
+    filterValidCategories = (categories) ->
+      poilcyCategoryIds = reqconf.poilcyCategoryIds or []
+      settledEnterpriseIds = reqconf.settledEnterpriseIds or []
+      invalidCategoryIds = poilcyCategoryIds.concat settledEnterpriseIds
+      (category for category in categories when category.id not in invalidCategoryIds)
+
+    articlesData =
+      formatedPublishTime: -> moment(@publish_at).format 'll'
+      cleanFirstParagraph: ->
+        $.trim $('<div>').html(@content).find('p').first().text()
+
+    preprocessArticles = (articles) ->
+      for article in articles
+        image = $('<div>').html(article.content).find('img').first().attr 'src'
+        if image
+          article.renderImage = true
+          article.image = image + '!670x300'
+        else
+          article.renderImage = false
+      articles
+
+    renderArticleList = (category) ->
+      $articleContainer = $('.article-list').spin()
+      requester.get('/articles', {category}).done (articles) ->
+        $articleContainer.spin false
+        articlesData.articles = preprocessArticles articles
+        $tmpl('articleList', articlesData).last().addClass 'last'
+      .fail ->
+        $articleContainer.html $('#fetchListError').html()
+
+    $categoryList = $('.aside .category-list').on 'click', 'li', (event) ->
+      $categoryList.find('a').removeClass 'active'
+      $clickElem = $(event.currentTarget).find('a').addClass 'active'
+      renderArticleList parseInt $clickElem.attr('data-category-id'), 10
+
+    requester.get('/articles/categories').done (categories) ->
+      categories = filterValidCategories categories
+      $tmpl('categoryList', {categories}).first().trigger 'click'
+    .fail ->
+      $(".category-list > ul.list-unstyled").html $('#fetchListError').html()
+
