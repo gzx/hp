@@ -1,0 +1,45 @@
+@import "../_variables.less";
+
+.download-list {
+  margin: 0 0 0 -15px;
+  padding: 0;
+  font-size: 0;
+  li.media {
+    display: inline-block;
+    padding: 13px;
+    margin-left: 15px;
+    width: 227px;
+    font-size: 14px;
+    background: #f2f2f2;
+    .media-object {
+      margin: auto auto 15px auto;
+      border-radius: 15px;
+    }
+    .media-heading, .format {
+      padding-left: 8px;
+    }
+    .media-heading {
+      font-size: 14px;
+    }
+    .format {
+      color: #cdcdcd;
+    }
+    .download {
+      display: block;
+      padding: 6px 10px;
+      margin: 15px 0 5px 0;
+      background: #60d4d4;
+      color: #FFF;
+      &:hover {
+        text-decoration: none;
+      }
+      .date {
+        margin-right: 20px;
+      }
+      .glyphicon {
+        top: 2px;
+        left: 5px;
+      }
+    }
+  }
+}

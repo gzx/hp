@@ -1,0 +1,24 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/media_download.css")
+
+block content
+  pageName = 'media-download'
+
+  include partials/_header.jade
+  .container
+    ul.download-list
+
+      each item in downloadMedia
+        li.media
+          <img class="media-object" src="images/download/download.png">
+          .media-body
+            h3.media-heading #{item.name}
+            .format #{item.format}
+            a(href="#{item.target}", target="_blank").download
+              span.date #{item.date}
+              .pull-right 下载
+                span.glyphicon.glyphicon-download
+
+  include partials/_footer.jade
