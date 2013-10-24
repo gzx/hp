@@ -1,19 +1,15 @@
 @import "./_variables.less";
 
-@font-color-base: #afafaf;
-@font-color-hover: #60d4d4;
-
-
 body {
   background: #fbf8f8;
   font-size: @font-size-base;
-  color: @font-color-base;
+  color: @text-color;
 }
 
 a {
-  color: @font-color-base;
+  color: @text-color;
   &:hover, &.active{
-    color: @font-color-hover;
+    color: @link-colro-active;
   }
 }
 
@@ -85,7 +81,7 @@ a {
       padding: 7px 15px;
       margin: 0 0 15px 0;
       font-size: 14px;
-      color: @font-color-base;
+      color: @text-color;
       font-weight: 400;
       background: #fbf8f8;
     }
@@ -98,15 +94,15 @@ a {
     }
     .media-heading, .media-body{
       font-size: 12px;
-      color: @font-color-base;
+      color: @text-color;
     }
     .media-body {
       padding-top: 5px;
       p {
         margin: 0;
-        color: @font-color-base;
+        color: @text-color;
         a {
-          color: @font-color-hover;
+          color: @link-colro-active;
         }
       }
     }
@@ -159,7 +155,7 @@ a {
     a {
       display: block;
       margin-top: 50px;
-      color: @font-color-hover;
+      color: @link-colro-active;
       font-size: 12px;
     }
   }
@@ -192,5 +188,6 @@ a {
 }
 
 .page-footer {
+  margin-top: 0;
   box-shadow: none;
 }
