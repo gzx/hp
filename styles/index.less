@@ -65,9 +65,12 @@ a {
     }
     .carousel-control-left {
       bottom: 32px;
+      background: url(../images/share/left.png) center right no-repeat;
     }
     .carousel-control-right {
       bottom: 0;
+      background: url(../images/share/right.png) center right no-repeat;
+
     }
 
   }
@@ -83,7 +86,8 @@ a {
       font-size: 14px;
       color: @text-color;
       font-weight: 400;
-      background: #fbf8f8;
+      background: url(../images/index/more.png) center right no-repeat;
+      background-color: #fbf8f8;
     }
     .media {
       margin: 0 0 10px 0;
@@ -122,7 +126,18 @@ a {
       padding: 0;
       width: 240px;
       h3 {
+        padding-left: 60px;
+        line-height: 40px;
         font-size: 18px;
+        &.location {
+          background: url(../images/index/location.png) center left no-repeat;
+        }
+        &.function {
+          background: url(../images/index/function.png) center left no-repeat;
+        }
+        &.round {
+          background: url(../images/index/round.png) center left no-repeat;
+        }
       }
       p {
         margin: 0;
@@ -153,13 +168,17 @@ a {
       font-size: 12px;
     }
     a {
-      display: block;
-      margin-top: 50px;
+      display: inline-block;
+      padding-right: 45px;
+      margin-top: 35px;
+      line-height: 30px;
       color: @link-colro-active;
       font-size: 12px;
+      background: url(../images/index/more.png) center right no-repeat;
     }
   }
   .articles {
+    background: url(../images/index/bg.png) repeat-x;
     .square {
       display: inline-block;
       margin: 0 14px -2px 0;
@@ -170,7 +189,10 @@ a {
     h3 {
       display: inline-block;
       margin: 0 50px 0 0;
+      padding-left: 65px;
+      line-height: 70px;
       font-size: 18px;
+      background: url(../images/index/award.png) center left no-repeat;
     }
     ul {
       display: inline-block;
