@@ -1,9 +1,12 @@
 
 header.page-header
-  h1.single-page-logo HiPark
+  unless pageName == 'index'
+    h1.single-page-logo HiPark
+
   .menu-list.container
     ul.list-inline
-      each menu in [{name: '首页', url: 'index.html'}, {name: '新闻', url: 'news.html'}, {name: '园区介绍', url: 'park_intro.html'}, {name: '服务政策', url: 'service_poilcy.html'}, {name: '入驻企业', url: 'settled_enterprise.html'}, {name: '移动APP', url: 'mobile_apps.html'}, {name: '社区', url: 'javascript:;'}]
+      each menu in [{name: '首页', pageName: 'index', url: 'index.html'}, {name: '新闻', pageName: 'news', url: 'news.html'}, {name: '园区介绍', pageName: 'park-intro', url: 'park_intro.html'}, {name: '服务政策', pageName: 'service-poilcy', url: 'service_poilcy.html'}, {name: '入驻企业', pageName: 'settled-enterprise', url: 'settled_enterprise.html'}, {name: '移动APP', pageName: 'mobile-apps', url: 'mobile_apps.html'}, {name: '社区', pageName: '', url: 'javascript:;'}]
         li
-          a(href="#{menu.url}")= menu.name
+          - var activeClass = menu.pageName == pageName ? 'active' : ''
+          a(href="#{menu.url}", class="#{activeClass}")= menu.name
 

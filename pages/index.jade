@@ -5,24 +5,14 @@ block append styles
   link(rel="stylesheet", type="text/css", href="styles/index.css")
 
 block content
-  h1.header.ir HiPark
-  .body
-    ul.nav.nav-pills
-      li
-        a(href="javascript:").active 首页
-      li
-        a(href="javascript:") 新闻
-      li
-        a(href="javascript:") 园区介绍
-      li
-        a(href="javascript:") 服务政策
-      li
-        a(href="javascript:") 入驻企业
-      li
-        a(href="javascript:") 移动APP
-      li
-        a(href="javascript:") 社区
+  pageName = 'index'
 
+  h1.header.ir HiPark
+
+  .body
+
+    include partials/_header.jade
+    
     .section
       .news.pull-right
         h3 园区新闻
