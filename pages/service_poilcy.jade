@@ -46,7 +46,7 @@ block append scripts
       $poilcyContainer = $('.poilcies').spin()
       requester.get('/articles', {category}).done (data) ->
         formatedTime = -> moment(@publish_at).format('ll')
-        articleListHml = tmpl 'articleList', {data, formatedTime}
+        articleListHml = $tmpl 'articleList', {data, formatedTime}
         $poilcyContainer.spin(false).html articleListHml
       .fail ->
         $('.poilcies').html $('#fetchListError').html()
@@ -61,7 +61,7 @@ block append scripts
         categories = (category for category in data when category.id in reqconf.poilcyCategoryIds)
       else
         categories = data
-      categoryListHtml = tmpl 'categoryList', {data: categories}
+      categoryListHtml = $tmpl 'categoryList', {data: categories}
       $('.poilcy-categories').html(categoryListHtml).find('> li').first().trigger 'click'
     .fail ->
       $('.poilcy-categories').html $('#fetchListError').html()

@@ -3,9 +3,28 @@ do ->
   if window.moment
     window.moment.lang 'zh-cn'
 
-  window.tmpl = (name, data) ->
+  window.$tmpl = (name, data) ->
     data.linkArticle = -> "articles.html?id=#{@id}"
-    templayed($("##{name}[type='text/template']").html()) data
+
+    $tmplContainer = $ "##{name}[type='text/template']"
+    $tmplDataset = $tmplContainer.data()
+    resultHtml = templayed($tmplContainer.html()) data
+    $result = $('<div>').html(resultHtml).children()
+
+    action = do ->
+      for name, value of $tmplDataset when /^tmpl[A-Z]/.test name
+        return {
+          method: name.replace(/^tmpl/, '').toLowerCase()
+          selector: value
+        }
+
+    if action
+      $target = $ action.selector
+      $target[action.method] $result
+      console.log '$target', $target, 'method', action.method
+
+    $result
+
 
 do ->
   $.fn.spin = (options) ->

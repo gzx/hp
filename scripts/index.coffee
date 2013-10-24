@@ -14,7 +14,7 @@ requester.get "/recommendations", (resp) ->
     cleanRecommendations: -> cleanHtml @target.context.content
     fitImage: fitImageFactory 520, 355
 
-  recommendationListHtml = tmpl 'recommendationList', data
+  recommendationListHtml = $tmpl 'recommendationList', data
   $(".recommenations .carousel-inner")
     .html(recommendationListHtml)
     .find(".item").first().addClass "active"
@@ -28,5 +28,6 @@ requester.get "/articles", {count: 4}, (resp) ->
       return flatContent if flatContent.length < 27
       flatContent.substr(0, 27) + "..."
 
-  articleListHtml = tmpl 'articleList', data
+  articleListHtml = $tmpl 'articleList', data
   $(".news ul").html articleListHtml
+
