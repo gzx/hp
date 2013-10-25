@@ -75,7 +75,7 @@ block append scripts
 
     requester.get('/articles/categories').done (categories) ->
       categories = filterValidCategories categories
-      $tmpl('categoryList', {categories}).first().trigger 'click'
+      $tmpl 'categoryList', {categories}
       categoryListLoadDefer.resolve()
     .fail ->
       $categoryList.html $('#fetchListError').html()

@@ -13,6 +13,8 @@ block content
 
   .container.body
     ul.article-list.list-unstyled.col-md-9
+    script(id='categoryNotExist', data-tmpl-html=".article-list", type="text/template").
+      <li>没有该新闻分类</li>
     script(id="articleList", data-tmpl-html=".article-list", type="text/template").
       {{^articles}}该分类下暂时没有新闻{{/articles}}
       {{#articles}}
@@ -47,7 +49,7 @@ block content
           {{^categories}}<li>暂时没有任何分类</li>{{/categories}}
           {{#categories}}
             <li>
-              <a href="javascript:;" data-category-id="{{id}}">{{name}}</a>
+              <a {{#active}}class="active"{{/active}} href="news.html?category={{id}}">{{name}}</a>
             </li>
           {{/categories}}
       .aside-module
@@ -65,11 +67,6 @@ block append scripts
   script(src="scripts/momentjs/moment.js")
   script(src="scripts/momentjs/lang/zh-cn.js")
   :coffee
-    filterValidCategories = (categories) ->
-      poilcyCategoryIds = reqconf.poilcyCategoryIds or []
-      settledEnterpriseIds = reqconf.settledEnterpriseIds or []
-      invalidCategoryIds = poilcyCategoryIds.concat settledEnterpriseIds
-      (category for category in categories when category.id not in invalidCategoryIds)
 
     articlesData =
       formatedPublishTime: -> moment(@publish_at).format 'll'
@@ -87,6 +84,10 @@ block append scripts
       articles
 
     renderArticleList = (category) ->
+      unless reqconf.newsCategory category
+        $tmpl('categoryNotExist').last().addClass 'last'
+        return
+
       $articleContainer = $('.article-list').spin()
       requester.get('/articles', {category}).done (articles) ->
         $articleContainer.spin false
@@ -95,14 +96,24 @@ block append scripts
       .fail ->
         $articleContainer.html $('#fetchListError').html()
 
-    $categoryList = $('.aside .category-list').on 'click', 'li', (event) ->
-      $categoryList.find('a').removeClass 'active'
-      $clickElem = $(event.currentTarget).find('a').addClass 'active'
-      renderArticleList parseInt $clickElem.attr('data-category-id'), 10
+    matchs = location.search.match /(\?|&)category=(\d+)(&|$)/
+    categoryId = if matchs?[2]? then parseInt(matchs[2], 10) else null
+    renderArticleList categoryId if categoryId?
 
     requester.get('/articles/categories').done (categories) ->
-      categories = filterValidCategories categories
-      $tmpl('categoryList', {categories}).first().trigger 'click'
+      articleRendered = true
+      unless categoryId?
+        articleRendered = false
+        categoryId = categories?[0]?.id
+
+      categories = for category in categories
+        continue unless reqconf.newsCategory category.id
+        category.active = category.id is categoryId
+        category
+
+      $tmpl 'categoryList', {categories}
+      return if articleRendered
+      renderArticleList categoryId
     .fail ->
       $(".category-list > ul.list-unstyled").html $('#fetchListError').html()
 
