@@ -1,0 +1,58 @@
+extends _layout
+
+block title
+  title 入驻企业
+
+block append styles
+  style(type="text/css").
+    .enterprise-list li {
+      margin: 0 12px 12px 0;
+      padding: 0;
+      width: 175px;
+      height: 75px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .enterprise-list a {
+      line-height: 75px;
+    }
+
+block content
+  pageName = 'settled-enterprises'
+
+  include partials/_header.jade
+
+  script(id="enterpriseList", data-tmpl-html=".enterprise-list", type='text/template').
+    {{content}}
+  .container.enterprise-list
+    ul.list-unstyled.list-inline
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+      li
+        a(href="https://www.google.com.hk/", target="_blank")
+          img(src="http://www.hipark.cn/images/index/artwork02.jpg")
+
+  include partials/_footer.jade
+
+block append scripts
+  :coffee
+    requester.get "/articles/pages", (resp) ->
+      id = 105
+
+      for page in resp
+        return unless page.id is id
+        enterpriseListHtml = $tmpl 'enterpriseList', page
+
