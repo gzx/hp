@@ -9,7 +9,7 @@ do ->
     $tmplContainer = $ "##{name}[type='text/template']"
     $tmplDataset = $tmplContainer.data()
     resultHtml = templayed($tmplContainer.html()) data
-    $result = $('<div>').html(resultHtml).children()
+    $result = $('<div>').html(resultHtml).contents()
 
     action = do ->
       for name, value of $tmplDataset when /^tmpl[A-Z]/.test name
