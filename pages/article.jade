@@ -54,6 +54,8 @@ block append scripts
 
     $articleContainer = $('article').spin()
     $categoryList = $ ".category-list > ul.list-unstyled"
+    categoryListLoadDefer = $.Deferred()
+
     matchs = location.search.match /(\?|&)id=(\d+)(&|$)/
     unless matchs and matchs[2]
       $articleContainer.html $tmpl 'articleNotExist'
@@ -68,15 +70,13 @@ block append scripts
     .done (article) ->
       article.formatedPublishTime = -> moment(@publish_at).format 'll'
       $tmpl 'article', article
-      $categoryList.on 'ajax:loaded', ->
-        $categoryList
-          .find("a[data-category-id='#{article.category.id}']")
-          .addClass 'active'
+      categoryListLoadDefer.promise().done ->
+        $categoryList.find("a[data-category-id='#{article.category.id}']").addClass 'active'
 
     requester.get('/articles/categories').done (categories) ->
       categories = filterValidCategories categories
       $tmpl('categoryList', {categories}).first().trigger 'click'
-      $categoryList.trigger 'ajax:loaded'
+      categoryListLoadDefer.resolve()
     .fail ->
       $categoryList.html $('#fetchListError').html()
 
