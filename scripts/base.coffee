@@ -49,7 +49,14 @@ do ->
   window.reqconf =
     urlRoot: "/api/apps/#{appid}"
     appid: appid
-    poilcyCategoryIds: [98, 99, 100, 101]
+    poilcyCategory: (id) ->
+      id in [98, 99, 100, 101]
+    settledEnterpriseCategory: (id) ->
+      id in []
+    newsCategory: (id) ->
+      return false if reqconf.poilcyCategory id
+      return false if reqconf.settledEnterpriseCategory id
+      true
 
 do ->
   requester = (config) ->

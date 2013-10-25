@@ -50,10 +50,7 @@ block append scripts
   script(src="scripts/momentjs/lang/zh-cn.js")
   :coffee
     filterValidCategories = (categories) ->
-      poilcyCategoryIds = reqconf.poilcyCategoryIds or []
-      settledEnterpriseIds = reqconf.settledEnterpriseIds or []
-      invalidCategoryIds = poilcyCategoryIds.concat settledEnterpriseIds
-      (category for category in categories when category.id not in invalidCategoryIds)
+      (category for category in categories when reqconf.newsCategory category.id)
 
     $articleContainer = $('article').spin()
     $categoryList = $ ".category-list > ul.list-unstyled"
