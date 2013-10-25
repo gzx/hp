@@ -3,8 +3,8 @@ do ->
   if window.moment
     window.moment.lang 'zh-cn'
 
-  window.$tmpl = (name, data) ->
-    data.linkArticle = -> "articles.html?id=#{@id}"
+  window.$tmpl = (name, data = {}) ->
+    data.linkArticle = -> "article.html?id=#{@id}"
 
     $tmplContainer = $ "##{name}[type='text/template']"
     $tmplDataset = $tmplContainer.data()

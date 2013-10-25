@@ -1,0 +1,85 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/article.css")
+
+block title
+  title 园区新闻
+
+block content
+  pageName = "ariticle"
+
+  include partials/_header.jade
+
+  .container.body
+    article.col-md-9
+
+    script(id='article', data-tmpl-html="article", type="text/template").
+      <h1 class="article-title">{{name}}</h1>
+      <p class="article-meta">
+        <time>{{formatedPublishTime}}</time>
+      </p>
+      <div class="article-content">{{{content}}}</div>
+
+    script(id="articleNotExist", data-tmpl-html="article", type="text/template").
+      <p>获取文章信息失败</p>
+
+    script(id="fetchArticleError", data-tmpl-html="article", type="text/template").
+      <p>获取文章信息失败</p>
+
+    .aside.pull-right.col-md-3
+      .aside-module.category-list
+        h2.aside-module-heading 新闻分类
+        ul.list-unstyled
+
+        script(id="categoryList", data-tmpl-html=".category-list > ul.list-unstyled", type="text/template").
+          {{^categories}}<li>暂时没有任何分类</li>{{/categories}}
+          {{#categories}}
+            <li>
+              <a href="news.html?category={{id}}" data-category-id="{{id}}">{{name}}</a>
+            </li>
+          {{/categories}}
+
+        script(id="fetchListError", type="text/template").
+          <li>获取信息失败</li>
+
+  include partials/_footer.jade
+
+block append scripts
+  script(src="scripts/momentjs/moment.js")
+  script(src="scripts/momentjs/lang/zh-cn.js")
+  :coffee
+    filterValidCategories = (categories) ->
+      poilcyCategoryIds = reqconf.poilcyCategoryIds or []
+      settledEnterpriseIds = reqconf.settledEnterpriseIds or []
+      invalidCategoryIds = poilcyCategoryIds.concat settledEnterpriseIds
+      (category for category in categories when category.id not in invalidCategoryIds)
+
+    $articleContainer = $('article').spin()
+    $categoryList = $ ".category-list > ul.list-unstyled"
+    matchs = location.search.match /(\?|&)id=(\d+)(&|$)/
+    unless matchs and matchs[2]
+      $articleContainer.html $tmpl 'articleNotExist'
+      return
+
+    articleId = matchs[2]
+    requester.get("/articles/#{articleId}").always ->
+      $articleContainer.spin false
+    .fail (jqXHR) ->
+      tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
+      $articleContainer.html $tmpl tplName
+    .done (article) ->
+      article.formatedPublishTime = -> moment(@publish_at).format 'll'
+      $tmpl 'article', article
+      $categoryList.on 'ajax:loaded', ->
+        $categoryList
+          .find("a[data-category-id='#{article.category.id}']")
+          .addClass 'active'
+
+    requester.get('/articles/categories').done (categories) ->
+      categories = filterValidCategories categories
+      $tmpl('categoryList', {categories}).first().trigger 'click'
+      $categoryList.trigger 'ajax:loaded'
+    .fail ->
+      $categoryList.html $('#fetchListError').html()
+
