@@ -1,0 +1,73 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/settled_enterprise.css")
+
+block title
+  title 入驻企业
+
+block content
+  pageName = "ariticle"
+
+  include partials/_header.jade
+
+  .container.body
+    article.col-md-9
+
+    script(id='article', data-tmpl-html="article", type="text/template").
+      <h1 class="article-title">{{name}}</h1>
+      <div class="article-content">{{{content}}}</div>
+
+    script(id="articleNotExist", data-tmpl-html="article", type="text/template").
+      <p>企业不存在</p>
+
+    script(id="fetchArticleError", data-tmpl-html="article", type="text/template").
+      <p>获取企业信息失败</p>
+
+    .aside.pull-right.col-md-3
+      .aside-module.enterprise-list
+        h2.aside-module-heading 其他企业
+        ul.list-unstyled
+
+        script(id="enterpriseList", data-tmpl-html=".enterprise-list > ul.list-unstyled", type="text/template").
+          {{^enterprises}}<li>暂时没有入驻企业</li>{{/enterprises}}
+          {{#enterprises}}
+            <li>
+              <a href="settled_enterprise.html?id={{id}}" data-enterprise-id="{{id}}">{{name}}</a>
+            </li>
+          {{/enterprises}}
+
+        script(id="fetchListError", type="text/template").
+          <li>获取信息失败</li>
+
+  include partials/_footer.jade
+
+block append scripts
+  :coffee
+    $articleContainer = $('article').spin()
+    $enterpriseList = $ ".enterprise-list > ul.list-unstyled"
+    enterpriseListLoadDefer = $.Deferred()
+
+    matchs = location.search.match /(\?|&)id=(\d+)(&|$)/
+    categoryId = reqconf.settledEnterpriseCategory()
+    unless matchs and matchs[2]
+      $articleContainer.html $tmpl 'articleNotExist'
+      return
+
+    articleId = matchs[2]
+    requester.get("/articles/#{articleId}").always ->
+      $articleContainer.spin false
+    .fail (jqXHR) ->
+      tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
+      $articleContainer.html $tmpl tplName
+    .done (article) ->
+      $tmpl 'article', article
+      enterpriseListLoadDefer.promise().done ->
+        $enterpriseList.find("a[data-enterprise-id='#{article.id}']").addClass 'active'
+
+    requester.get("/articles", category: categoryId).done (enterprises) ->
+      $tmpl 'enterpriseList', {enterprises}
+      enterpriseListLoadDefer.resolve()
+    .fail ->
+      $enterpriseList.html $('#fetchListError').html()
+
