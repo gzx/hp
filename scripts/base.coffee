@@ -20,7 +20,7 @@ do ->
 
     if action
       $target = $ action.selector
-      $target[action.method] $result
+      $target[action.method]? $result
       console.log '$target', $target, 'method', action.method
 
     $result
