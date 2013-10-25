@@ -44,15 +44,15 @@ do ->
         spin.spin elem
 
 do ->
-  appid = 102
+  appid = 793
 
   window.reqconf =
     urlRoot: "/api/apps/#{appid}"
     appid: appid
     poilcyCategory: (id) ->
-      id in [98, 99, 100, 101]
+      id in [105, 106, 107, 108]
     settledEnterpriseCategory: (id) ->
-      if id? then id is 103 else 103
+      if id? then id is 109 else 109
     newsCategory: (id) ->
       return false if reqconf.poilcyCategory id
       return false if reqconf.settledEnterpriseCategory id
