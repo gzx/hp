@@ -12,11 +12,11 @@
   margin-top: 60px;
 }
 
-.article-list {
+.news-container {
   margin-top: -30px;
   min-height: 300px;
 
-  > li {
+  .article-list > li {
     padding-top: 30px;
     padding-bottom: 30px;
     border-bottom: 1px solid @border-normal;
@@ -50,6 +50,23 @@
 
   .article-more {
     color: @link-color-active;
+  }
+}
+
+.pagination {
+  li > a {
+    border: none;
+  }
+
+  li > a:hover {
+    color: #fff;
+    background: @link-color-active;
+  }
+
+  .active {
+    & > a, & > a:hover {
+      background: @link-color-active;
+    }
   }
 }
 

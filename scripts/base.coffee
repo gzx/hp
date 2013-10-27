@@ -7,21 +7,28 @@ do ->
     data.linkArticle = -> "article.html?id=#{@id}"
 
     $tmplContainer = $ "##{name}[type='text/template']"
+    throw Error 'template element not exist' unless $tmplContainer.length
+
     $tmplDataset = $tmplContainer.data()
     resultHtml = templayed($tmplContainer.html()) data
     $result = $('<div>').html(resultHtml).contents()
 
     action = do ->
-      for name, value of $tmplDataset when /^tmpl[A-Z]/.test name
+      for dataname, datavalue of $tmplDataset when /^tmpl[A-Z]/.test dataname
         return {
-          method: name.replace(/^tmpl/, '').toLowerCase()
-          selector: value
+          method: dataname.replace(/^tmpl/, '').toLowerCase()
+          selector: datavalue
         }
 
     if action
       $target = $ action.selector
       $target[action.method]? $result
-      console.log '$target', $target, 'method', action.method
+      console.log 'render template', name, {
+        '$target': $target
+        'template': $tmplContainer.html()
+        'data': data
+        'method': action.method
+      }
 
     $result
 
@@ -83,4 +90,64 @@ do ->
         requester config
 
   window.requester = requester
+
+do ->
+    window.generatePagination = (baseUrl, maxPage, currentPage) ->
+      prevPage = currentPage - 1
+      nextPage = currentPage + 1
+      pagination = pages: []
+
+      generatePageData = (num) ->
+        num: num, url: "#{baseUrl}&page=#{num}", active: currentPage is num
+
+      pagination.prevPage = generatePageData(prevPage) if prevPage >= 1
+      pagination.nextPage = generatePageData(nextPage) if nextPage <= maxPage
+
+      # 1 2 3 4 5 6 7 8 9
+      #
+      # (1) 2 3 4 ... 9 10
+      # 1 (2) 3 4 ... 9 10
+      # 1 2 (3) 4 ... 9 10
+      #
+      # 1 2 3 (4) 5 ... 9 10
+      #
+      # 1 2 ... 4 (5) 6 ... 9 10
+      # 1 2 ... 5 (6) 7 ... 9 10
+      #
+      # 1 2 ... 6 (7) 8 9 10
+      #
+      # 1 2 ... 7 (8) 9 10
+      # 1 2 ... 7 8 (9) 10
+      # 1 2 ... 7 8 9 (10)
+      if maxPage < 10
+        pagination.pages.push(generatePageData num) for num in [1..maxPage]
+
+      else if 1 <= currentPage < 4
+        pagination.pages.push(generatePageData num) for num in [1..4]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [maxPage - 1, maxPage]
+
+      else if currentPage is 4
+        pagination.pages.push(generatePageData num) for num in [1..5]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [maxPage - 1, maxPage]
+
+      else if currentPage is maxPage - 3
+        pagination.pages.push(generatePageData num) for num in [1, 2]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [maxPage - 4..maxPage]
+
+      else if maxPage - 3 < currentPage <= maxPage
+        pagination.pages.push(generatePageData num) for num in [1, 2]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [maxPage - 3..maxPage]
+
+      else
+        pagination.pages.push(generatePageData num) for num in [1, 2]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [currentPage - 1, currentPage, currentPage + 1]
+        pagination.pages.push ellipsis: true
+        pagination.pages.push(generatePageData num) for num in [maxPage - 1, maxPage]
+
+      pagination
 

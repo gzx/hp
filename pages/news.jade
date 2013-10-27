@@ -12,34 +12,57 @@ block content
   include partials/_header.jade
 
   .container.body
-    ul.article-list.list-unstyled.col-md-9
-    script(id='categoryNotExist', data-tmpl-html=".article-list", type="text/template").
-      <li>没有该新闻分类</li>
-    script(id="articleList", data-tmpl-html=".article-list", type="text/template").
-      {{^articles}}该分类下暂时没有新闻{{/articles}}
-      {{#articles}}
-      <li>
-        <article>
-          <header>
-            <h1 class="article-title">{{name}}</h1>
-            <p class="article-meta">
-              <time>{{../formatedPublishTime}}</time>
-              {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
-            </p>
-          </header>
-          {{#renderImage}}
-          <section class="article-image">
-            <img src="{{image}}" width="670" height="300">
-          </section>
-          {{/renderImage}}
-          <section class="article-intro">
-            <p>{{{../cleanFirstParagraph}}}</p>
-            <p><a href="{{../linkArticle}}" class="article-more">继续阅读 >></a></p>
-          </section>
-          <footer class="article-share"></footer>
-        </article>
-      </li>
-      {{/articles}}
+    .col-md-9.news-container
+      ul.list-unstyled.article-list
+      script(id='categoryNotExist', data-tmpl-html=".article-list", type="text/template").
+        <li>没有该新闻分类</li>
+      script(id="articleList", data-tmpl-html=".article-list", type="text/template").
+        {{^articles}}该分类下暂时没有新闻{{/articles}}
+        {{#articles}}
+        <li>
+          <article>
+            <header>
+              <h1 class="article-title">{{name}}</h1>
+              <p class="article-meta">
+                <time>{{../formatedPublishTime}}</time>
+                {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
+              </p>
+            </header>
+            {{#renderImage}}
+            <section class="article-image">
+              <img src="{{image}}" width="670" height="300">
+            </section>
+            {{/renderImage}}
+            <section class="article-intro">
+              <p>{{{../cleanFirstParagraph}}}</p>
+              <p><a href="{{../linkArticle}}" class="article-more">继续阅读 >></a></p>
+            </section>
+            <footer class="article-share"></footer>
+          </article>
+        </li>
+        {{/articles}}
+
+      ul.pagination.pull-right
+      script(id='paginationList', data-tmpl-html=".pagination", type="text/template").
+        {{#prevPageExist}}<li><a href="{{prevPage.url}}">上一页</a></li>{{/prevPageExist}}
+        {{^prevPageExist}}<li class="disabled"><a href="javascript:;">已在首页</a></li>{{/prevPageExist}}
+
+        {{#pages}}
+          {{#active}}
+          <li class="active">
+            <a href="javascript:;">
+              {{num}} <span class="sr-only">(当前页)</span>
+            </a>
+          </li>
+          {{/active}}
+          {{^active}}
+            {{#ellipsis}}<li class="disabled"><a href="javascript:;">...</a></li>{{/ellipsis}}
+            {{^ellipsis}}<li><a href="{{url}}">{{num}}</a></li>{{/ellipsis}}
+          {{/active}}
+        {{/pages}}
+
+        {{#nextPageExist}}<li><a href="{{nextPage.url}}">下一页</a></li>{{/nextPageExist}}
+        {{^nextPageExist}}<li class="disabled"><a href="javascript:;">已在末页</a></li>{{/nextPageExist}}
 
     .aside.pull-right.col-md-3
       .aside-module.category-list
@@ -67,7 +90,6 @@ block append scripts
   script(src="scripts/momentjs/moment.js")
   script(src="scripts/momentjs/lang/zh-cn.js")
   :coffee
-
     articlesData =
       formatedPublishTime: -> moment(@publish_at).format 'll'
       cleanFirstParagraph: ->
@@ -83,22 +105,42 @@ block append scripts
           article.renderImage = false
       articles
 
-    renderArticleList = (category) ->
+    renderPagination = (category, totalNewsCount, currentPage) ->
+      maxPage = Math.ceil totalNewsCount / pageNewsCount
+      baseUrl = "#{location.pathname}?category=#{category}"
+      data = generatePagination baseUrl, maxPage, currentPage
+      data.prevPageExist = !!data.prevPage
+      data.nextPageExist = !!data.nextPage
+      $tmpl 'paginationList', data
+
+    renderArticleList = (category, page) ->
       unless reqconf.newsCategory category
         $tmpl('categoryNotExist').last().addClass 'last'
         return
 
       $articleContainer = $('.article-list').spin()
-      requester.get('/articles', {category}).done (articles) ->
+      requester.get('/articles', {category, page, count: pageNewsCount}).done (articles, textStatus, jqXHR) ->
         $articleContainer.spin false
         articlesData.articles = preprocessArticles articles
         $tmpl('articleList', articlesData).last().addClass 'last'
+
+        totalNewsCount = parseInt jqXHR.getResponseHeader('X-Resource-Count'), 10
+        renderPagination category, totalNewsCount, page
       .fail ->
         $articleContainer.html $('#fetchListError').html()
 
-    matchs = location.search.match /(\?|&)category=(\d+)(&|$)/
-    categoryId = if matchs?[2]? then parseInt(matchs[2], 10) else null
-    renderArticleList categoryId if categoryId?
+    categoryId = null
+    pageNewsCount = 10
+    page = 1
+
+    do ->
+      matchs = location.search.match /(\?|&)page=(\d+)(&|$)/
+      page = parseInt(matchs[2], 10) if matchs?[2]?
+
+    do ->
+      matchs = location.search.match /(\?|&)category=(\d+)(&|$)/
+      categoryId = parseInt(matchs[2], 10) if matchs?[2]?
+      renderArticleList categoryId, page if categoryId?
 
     requester.get('/articles/categories').done (categories) ->
       articleRendered = true
@@ -113,7 +155,7 @@ block append scripts
 
       $tmpl 'categoryList', {categories}
       return if articleRendered
-      renderArticleList categoryId
+      renderArticleList categoryId, page
     .fail ->
       $(".category-list > ul.list-unstyled").html $('#fetchListError').html()
 
