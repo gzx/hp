@@ -5,7 +5,7 @@ header.page-header
 
   .menu-list.container
     ul.list-inline
-      each menu in [{name: '首页', pageName: 'index', url: 'index.html'}, {name: '新闻', pageName: 'news', url: 'news.html'}, {name: '园区介绍', pageName: 'park-intro', url: 'park_intro.html'}, {name: '服务政策', pageName: 'service-poilcy', url: 'service_poilcy.html'}, {name: '入驻企业', pageName: 'settled-enterprises', url: 'settled_enterprises.html'}, {name: '移动APP', pageName: 'mobile-apps', url: 'mobile_apps.html'}, {name: '社区', pageName: '', url: 'javascript:;'}]
+      each menu in [{name: '首页', pageName: 'index', url: 'index.html'}, {name: '新闻', pageName: 'news', url: 'news.html'}, {name: '园区介绍', pageName: 'park-intro', url: 'park_intro.html'}, {name: '服务政策', pageName: 'service-poilcy', url: 'service_poilcy.html'}, {name: '入驻企业', pageName: 'settled-enterprises', url: 'settled_enterprises.html'}, {name: '移动APP', pageName: 'mobile-apps', url: 'javascript:;'}, {name: '社区', pageName: '', url: 'javascript:;'}]
         li
           - var activeClass = menu.pageName == pageName ? 'active' : ''
           a(href="#{menu.url}", class="#{activeClass}")= menu.name
