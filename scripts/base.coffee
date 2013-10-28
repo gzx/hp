@@ -38,10 +38,11 @@ do ->
 
 do ->
   $.fn.spin = (options) ->
-    options = $.extend {
-      color: '#555'
-      width: 4
-    }, options
+    if options isnt false
+      options = $.extend {
+        color: '#555'
+        width: 4
+      }, options
 
     @each (index, elem) =>
       $elem = @eq index

@@ -133,6 +133,7 @@ block append scripts
         totalNewsCount = parseInt jqXHR.getResponseHeader('X-Resource-Count'), 10
         renderPagination category, totalNewsCount, page
       .fail ->
+        $newsContainer.spin false
         $newsContainer.html $('#fetchListError').html()
 
     categoryId = null
