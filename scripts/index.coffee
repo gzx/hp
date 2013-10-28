@@ -30,7 +30,7 @@ requester.get "/articles", {count: 4}, (resp) ->
       return flatContent if flatContent.length < 27
       flatContent.substr(0, 27) + "..."
     image: ->
-      random = Math.round Math.random()*10
+      random = Math.ceil Math.random()*10
       "./images/random/#{random}.jpg"
   articleListHtml = $tmpl 'articleList', data
   $(".news ul").html articleListHtml
