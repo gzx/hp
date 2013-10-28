@@ -1,7 +1,9 @@
 
 
 cleanHtml = (str) ->
-  $.trim $('<div>').html(str).text()
+  cleanText = $.trim $('<div>').html(str).text()
+  return cleanText if cleanText.length < 100
+  cleanText.substr(0, 95) + "..."
 
 fitImageFactory = (width = "", height = "") ->
   ->
