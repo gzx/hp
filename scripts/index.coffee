@@ -21,10 +21,16 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
     .html(recommendationListHtml)
     .find(".item").first().addClass "active"
 
-requester.get "/articles", {count: 4}, (resp) ->
+requester.get "/articles", {count: 15}, (resp) ->
+  result = []
+  for article in resp
+    if reqconf.newsCategory article.category.id
+      result.push article
+
+  result = result.slice 0, 4
 
   data =
-    list: resp
+    list: result
     cleanContent: ->
       flatContent = cleanHtml @content
       return flatContent if flatContent.length < 27
