@@ -121,16 +121,19 @@ block append scripts
         $tmpl('categoryNotExist').last().addClass 'last'
         return
 
-      $articleContainer = $('.article-list').spin()
-      requester.get('/articles', {category, page, count: pageNewsCount}).done (articles, textStatus, jqXHR) ->
-        $articleContainer.spin false
+      $newsContainer = $('.news-container').spin()
+      requester.get(
+        '/articles'
+        {category, page, count: pageNewsCount}
+      ).done (articles, textStatus, jqXHR) ->
+        $newsContainer.spin false
         articlesData.articles = preprocessArticles articles
-        $tmpl('articleList', articlesData).last().addClass 'last'
+        $tmpl('articleList', articlesData).filter('li').last().addClass 'last'
 
         totalNewsCount = parseInt jqXHR.getResponseHeader('X-Resource-Count'), 10
         renderPagination category, totalNewsCount, page
       .fail ->
-        $articleContainer.html $('#fetchListError').html()
+        $newsContainer.html $('#fetchListError').html()
 
     categoryId = null
     pageNewsCount = 10

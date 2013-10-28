@@ -7,15 +7,15 @@ do ->
     data.linkArticle = -> $tmpl.linkArticle @id
     data.linkPage = -> $tmpl.linkPage @id
 
-    $tmplContainer = $ "##{name}[type='text/template']"
-    throw Error 'template element not exist' unless $tmplContainer.length
+    $tmplElem = $ "##{name}[type='text/template']"
+    throw Error 'template element not exist' unless $tmplElem.length
 
-    $tmplDataset = $tmplContainer.data()
-    resultHtml = templayed($tmplContainer.html()) data
-    $result = $('<div>').html(resultHtml).contents()
+    $tmplElemDataset = $tmplElem.data()
+    resultHtml = templayed($tmplElem.html()) data
+    $contents = $('<div>').html(resultHtml).contents()
 
     action = do ->
-      for dataname, datavalue of $tmplDataset when /^tmpl[A-Z]/.test dataname
+      for dataname, datavalue of $tmplElemDataset when /^tmpl[A-Z]/.test dataname
         return {
           method: dataname.replace(/^tmpl/, '').toLowerCase()
           selector: datavalue
@@ -23,15 +23,15 @@ do ->
 
     if action
       $target = $ action.selector
-      $target[action.method]? $result
+      $target[action.method]? $contents
       console.log 'render template', name, {
         '$target': $target
-        'template': $tmplContainer.html()
+        'template': $tmplElem.html()
         'data': data
         'method': action.method
       }
 
-    $result
+    $contents
 
   $tmpl.linkArticle = (id) -> "article.html?id=#{id}"
   $tmpl.linkPage = (id) -> "page.html?id=#{id}"
