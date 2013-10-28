@@ -9,7 +9,7 @@ fitImageFactory = (width = "", height = "") ->
   ->
     @image + "!#{width}x#{height}"
 
-requester.get "/recommendations", (resp) ->
+requester.get "/recommendations", type: "article_banner", (resp) ->
 
   data =
     list: resp
