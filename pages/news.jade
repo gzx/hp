@@ -93,7 +93,10 @@ block append scripts
     articlesData =
       formatedPublishTime: -> moment(@publish_at).format 'll'
       cleanFirstParagraph: ->
-        $.trim $('<div>').html(@content).find('div, p').first().text()
+        cleanText = $.trim $('<div>').html(@content).find('div, p').first().text()
+        return cleanText if cleanText.length < 190
+        cleanText.substr(0, 190) + "..."
+
 
     preprocessArticles = (articles) ->
       for article in articles
