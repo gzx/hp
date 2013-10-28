@@ -4,7 +4,8 @@ do ->
     window.moment.lang 'zh-cn'
 
   window.$tmpl = (name, data = {}) ->
-    data.linkArticle = -> "article.html?id=#{@id}"
+    data.linkArticle = -> $tmpl.linkArticle @id
+    data.linkPage = -> $tmpl.linkPage @id
 
     $tmplContainer = $ "##{name}[type='text/template']"
     throw Error 'template element not exist' unless $tmplContainer.length
@@ -32,6 +33,8 @@ do ->
 
     $result
 
+  $tmpl.linkArticle = (id) -> "article.html?id=#{id}"
+  $tmpl.linkPage = (id) -> "page.html?id=#{id}"
 
 do ->
   $.fn.spin = (options) ->
