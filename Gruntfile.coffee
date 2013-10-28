@@ -59,6 +59,7 @@ module.exports = (grunt) ->
         src: [
           'momentjs/moment.js'
           'momentjs/lang/zh-cn.js'
+          'jquery.scrollTo/jquery.scrollTo.js'
         ]
         dest: 'public/scripts/'
       assets:

@@ -7,12 +7,12 @@ block append styles
 block content
   pageName = 'index'
 
-  h1.header.ir HiPark
+  h1.header.ir(style="cursor: pointer") HiPark
 
   .body
 
     include partials/_header.jade
-    
+
     .section
       .news.pull-right
         h3 园区新闻
@@ -95,10 +95,11 @@ block content
         img(src="./images/index/companies.png").companies
     .section
       img(src="./images/index/social.png").social
-        
+
   include partials/_footer.jade
-    
+
 block append scripts
   script(src="scripts/bs/carousel.js")
+  script(src="scripts/jquery.scrollTo/jquery.scrollTo.js")
   script(src="scripts/index.js")
 

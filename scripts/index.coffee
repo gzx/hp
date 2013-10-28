@@ -9,6 +9,9 @@ fitImageFactory = (width = "", height = "") ->
   ->
     @image + "!#{width}x#{height}"
 
+$('.header').click ->
+  $.scrollTo '.body', 500, margin: true
+
 requester.get "/recommendations", type: "article_banner", (resp) ->
 
   data =
