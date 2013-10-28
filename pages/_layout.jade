@@ -6,11 +6,13 @@ head
 
   block title
     title 首页
+
   block styles
     link(rel="stylesheet", type="text/css", href="styles/base.css")
 
 body
-  - var linkArticle = function linkArticle(articleid) { return "article.html?id=" + articleid }
+  - var linkArticle = function linkArticle(id) { return "article.html?id=" + id }
+  - var linkPage = function linkPage(id) { return "page.html?id=" + id }
 
   block content
 
