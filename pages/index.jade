@@ -43,10 +43,10 @@ block content
           {{#list}}
             <div class="item">
               <img src={{../fitImage}}>
-              <div class="carousel-caption">
+              <a href="{{../makeLink}}" class="carousel-caption">
                 <div class="heading">{{target.context.name}}</div>
                 <div class="content">{{../cleanRecommendations}}</div>
-              </div>
+              </a>
             </div>
           {{/list}}
 

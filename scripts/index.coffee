@@ -18,7 +18,12 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
     list: resp
     cleanRecommendations: -> cleanHtml @target.context.content
     fitImage: fitImageFactory 520, 355
-
+    makeLink: ->
+      switch @target.type
+        when "article" then $tmpl.linkArticle @target.id
+        when "page" then $tmpl.linkPage @target.id
+        else "javascript:"
+        
   recommendationListHtml = $tmpl 'recommendationList', data
   $(".recommenations .carousel-inner")
     .html(recommendationListHtml)
