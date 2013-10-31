@@ -1,4 +1,6 @@
 
+$("#carousel-generic").carousel 'cycle'
+
 cleanHtml = (str) ->
   cleanText = $.trim $('<div>').html(str).text()
   return cleanText if cleanText.length < 100
