@@ -1,5 +1,4 @@
 
-
 cleanHtml = (str) ->
   cleanText = $.trim $('<div>').html(str).text()
   return cleanText if cleanText.length < 100
@@ -23,7 +22,7 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
         when "article" then $tmpl.linkArticle @target.id
         when "page" then $tmpl.linkPage @target.id
         else "javascript:"
-        
+
   recommendationListHtml = $tmpl 'recommendationList', data
   $(".recommenations .carousel-inner")
     .html(recommendationListHtml)
@@ -44,6 +43,8 @@ requester.get "/articles", {count: 15}, (resp) ->
       return flatContent if flatContent.length < 27
       flatContent.substr(0, 27) + "..."
     image: ->
+      image = $('<div>').html(@content).find('img').first().attr 'src'
+      return "#{image}!70x70" if image
       random = Math.ceil Math.random()*10
       "./images/random/#{random}.jpg"
   articleListHtml = $tmpl 'articleList', data
