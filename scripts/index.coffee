@@ -52,7 +52,7 @@ requester.get "/articles", {count: 15}, (resp) ->
         return "./images/random/#{random}.jpg"
 
       if /http:/.test image
-        "#{image}!70x70"
+        "#{image}!140x140"
       else
         image
 
