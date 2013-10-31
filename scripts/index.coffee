@@ -21,6 +21,7 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
       switch @target.type
         when "article" then $tmpl.linkArticle @target.id
         when "page" then $tmpl.linkPage @target.id
+        when "url" then @target.id
         else "javascript:"
 
   recommendationListHtml = $tmpl 'recommendationList', data
