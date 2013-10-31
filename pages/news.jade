@@ -101,11 +101,15 @@ block append scripts
     preprocessArticles = (articles) ->
       for article in articles
         image = $('<div>').html(article.content).find('img').first().attr 'src'
-        if image
-          article.renderImage = true
-          article.image = image + '!670x300'
-        else
+        unless image
           article.renderImage = false
+        else
+          article.renderImage = true
+          if /http:/.test image
+            article.image = image + '!670x300'
+          else
+            article.image = image
+
       articles
 
     renderPagination = (category, totalNewsCount, currentPage) ->

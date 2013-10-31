@@ -44,9 +44,15 @@ requester.get "/articles", {count: 15}, (resp) ->
       flatContent.substr(0, 27) + "..."
     image: ->
       image = $('<div>').html(@content).find('img').first().attr 'src'
-      return "#{image}!70x70" if image
-      random = Math.ceil Math.random()*10
-      "./images/random/#{random}.jpg"
+      unless image
+        random = Math.ceil Math.random()*10
+        return "./images/random/#{random}.jpg"
+
+      if /http:/.test image
+        "#{image}!70x70"
+      else
+        image
+
   articleListHtml = $tmpl 'articleList', data
   $(".news ul").html articleListHtml
 
