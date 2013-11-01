@@ -97,6 +97,7 @@ do ->
 
 do ->
     window.generatePagination = (baseUrl, maxPage, currentPage) ->
+      maxPage or= 1
       prevPage = currentPage - 1
       nextPage = currentPage + 1
       pagination = pages: []
