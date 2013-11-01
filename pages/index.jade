@@ -41,13 +41,13 @@ block content
 
         script(id="recommendationList", type='text/template').
           {{#list}}
-            <div class="item">
+            <a class="item" href="{{../makeLink}}">
               <img src={{../fitImage}}>
-              <a href="{{../makeLink}}" class="carousel-caption">
+              <div class="carousel-caption">
                 <div class="heading">{{target.context.name}}</div>
                 <div class="content">{{../cleanRecommendations}}</div>
-              </a>
-            </div>
+              </div>
+            </a>
           {{/list}}
 
         a(href="#carousel-generic", data-slide="prev").carousel-control-left
