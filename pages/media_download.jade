@@ -16,10 +16,10 @@ block content
       each item in downloadMedia
         li.media
           <img class="media-object" src="images/download/download.png">
-          .media-body
+          .media-body.text-center
             h3.media-heading #{item.name}
             .format #{item.format}
-            a(href="#{item.target}", target="_blank").download
+            a(href="#{item.target}", target="_blank").download.text-left
               span.date #{item.date}
               .pull-right 下载
                 span.glyphicon.glyphicon-download
