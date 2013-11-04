@@ -60,15 +60,34 @@ do ->
   window.reqconf =
     urlRoot: "/api/apps/#{appid}"
     appid: appid
-    poilcyCategory: (id) ->
-      id in [105, 106, 107, 108]
+    poilcyCategory: (categories) ->
+      validateIds = [108, 105, 106, 107]
+      return validateIds unless categories
+
+      result = []
+
+      for category in categories
+        index = validateIds.indexOf category.id
+        continue if index is -1
+        result[index] = category
+
+      result
+
     settledEnterpriseCategory: (id) ->
       if id? then id is 109 else 109
-    newsCategory: (id) ->
-      return false if reqconf.poilcyCategory id
-      return false if reqconf.settledEnterpriseCategory id
-      true
 
+    newsCategory: (categories) ->
+      result = for category in categories
+        continue if reqconf.poilcyCategory([category]).length
+        continue if reqconf.settledEnterpriseCategory category.id
+        category
+      for category, index in result
+        continue if category.id isnt 104
+        result.splice index, 1
+        result.push category
+
+      result
+      
 do ->
   requester = (config) ->
     config = $.extend true, {}, config

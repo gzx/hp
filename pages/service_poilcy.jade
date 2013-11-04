@@ -65,7 +65,7 @@ block append scripts
       renderArticleList parseInt $clickElem.attr('data-category-id'), 10
 
     requester.get('/articles/categories').done (data) ->
-      categories = (category for category in data when reqconf.poilcyCategory category.id)
+      categories = reqconf.poilcyCategory data
       categoryListHtml = $tmpl 'categoryList', {data: categories}
       $('.poilcy-categories').html(categoryListHtml).find('> li').first().trigger 'click'
     .fail ->

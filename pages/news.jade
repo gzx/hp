@@ -155,12 +155,11 @@ block append scripts
 
     requester.get('/articles/categories').done (categories) ->
       articleRendered = true
+      categories = reqconf.newsCategory categories
       unless categoryId?
         articleRendered = false
         categoryId = categories?[0]?.id
-
       categories = for category in categories
-        continue unless reqconf.newsCategory category.id
         category.active = category.id is categoryId
         category
 
