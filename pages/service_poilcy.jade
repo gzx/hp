@@ -13,7 +13,15 @@ block content
 
   img.page-banner(src="images/service_poilcy/banner.png")
 
-  img.page-banner(src="images/service_poilcy/features.png")
+  .container
+    ul.features.list-inline
+      each feature in features
+        li.media.text-center
+          a(href="page.html?id=#{feature.id}")
+            img(src="images/service_poilcy/#{feature.image}")
+          .media-body
+            h2.media-heading= feature.heading
+            p.text-left= feature.summary
 
   .poilcy-area.container
     ul.list-unstyled.poilcy-categories.col-md-3
