@@ -87,7 +87,7 @@ do ->
         result.push category
 
       result
-      
+
 do ->
   requester = (config) ->
     config = $.extend true, {}, config
