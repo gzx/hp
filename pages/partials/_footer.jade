@@ -2,11 +2,16 @@
 footer.page-footer(class="page-#{pageName}")
   .container
     ul.list-inline.text-center
-      links = [{name: "联系我们", href: "contact.html"}, {name: "服务政策", href: ""}, {name: "入驻企业"}, {name: "移动APP"}]
-      each link in links
+      each link in [{name: "关于我们", id: 218}, {name: "联系我们", id: 219}, {name: "网站地图", id: 220}, {name: "加入我们", id: 221}, {name: "移动APP", id: 222}, {name: "流量统计", href: "javascript:;"}]
         li
-          a(href=link.href)= link.name
-    p.text-center Copyright © 2013 HIPARK 版权声明 浙ICP备11034583号
+          if link.href
+            a(href=link.href, target="_blank")= link.name
+          else
+            a(href="page.html?id=#{link.id}")= link.name
+
+    p.text-center.copyright
+      | Copyright © 2013 HIPARK 版权声明 浙ICP备11034583号 | 
+      a(href="http://my.appatom.com/", target="_blank") 管理站点
 
     .logo
       a(href="http://gezbox.com/", target="_blank").dt
