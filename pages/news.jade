@@ -17,7 +17,7 @@ block content
       script(id='categoryNotExist', data-tmpl-html=".article-list", type="text/template").
         <li>没有该新闻分类</li>
       script(id="articleList", data-tmpl-html=".article-list", type="text/template").
-        {{^articles}}该分类下暂时没有新闻{{/articles}}
+        {{^articles}}<li>该分类下暂时没有新闻</li>{{/articles}}
         {{#articles}}
         <li>
           <article>
@@ -67,8 +67,8 @@ block content
         {{^nextPageExist}}<li class="disabled"><a href="javascript:;">已在末页</a></li>{{/nextPageExist}}
 
     .aside.pull-right.col-md-3
-      .aside-module.category-list
-        h2.aside-module-heading 新闻分类
+      .aside-module.category-list.item-list
+        h2.aside-module-heading.sr-only 新闻分类
         ul.list-unstyled
         script(id="categoryList", data-tmpl-html=".category-list > ul.list-unstyled", type="text/template").
           {{^categories}}<li>暂时没有任何分类</li>{{/categories}}

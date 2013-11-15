@@ -1,0 +1,93 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/pages/news.css")
+  link(rel="stylesheet", type="text/css", href="styles/pages/article.css")
+
+  :less
+    .aside {
+      .aside-module .download {
+        display: inline-block;
+        padding-right: 25px;
+        background: url(../../images/share/download.png) center right no-repeat;
+      }
+    }
+
+block content
+  pageName = "article-collection"
+
+  include partials/_header.jade
+
+  .container.body
+    article.col-md-9
+
+    script(id='article', data-tmpl-html="article", type="text/template").
+      <h1 class="article-title">{{name}}</h1>
+      <p class="article-meta">
+        <time>{{formatedPublishTime}}</time>
+      </p>
+      <div class="article-content">{{{content}}}</div>
+
+    script(id="articleNotExist", data-tmpl-html="article", type="text/template").
+      <p>文章不存在</p>
+
+    script(id="fetchArticleError", data-tmpl-html="article", type="text/template").
+      <p>获取信息失败</p>
+
+    .aside.pull-right.col-md-3
+      .aside-module.article-list.item-list
+        h2.aside-module-heading.sr-only 文章列表
+        ul.list-unstyled
+        script(id="articleList", data-tmpl-html=".article-list > ul.list-unstyled", type="text/template").
+          {{^articles}}<li>暂时没有发布任何内容</li>{{/articles}}
+          {{#articles}}
+            <li>
+              <a {{#active}}class="active"{{/active}} href="article_collection.html?id={{../categoryid}}&article={{id}}">{{name}}</a>
+            </li>
+          {{/articles}}
+
+      .aside-module.service-poilcy.hidden
+        h2.aside-module-heading
+          a(href="service_poilcy.html").download 服务与政策
+
+  script(id="fetchListError", data-tmpl-html=".article-list > ul.list-unstyled", type="text/template").
+    <li>获取信息失败</li>
+
+  include partials/_footer.jade
+
+block append scripts
+  script(src="scripts/momentjs/moment.js")
+  script(src="scripts/momentjs/lang/zh-cn.js")
+  :coffee
+    preprocessArticles = (articles) ->
+      for article in articles
+        article.active = article.id is articleid
+      articles
+
+    $articleContainer = $('article').spin()
+    renderArticle = ->
+      requester.get("/articles/#{articleid}").always ->
+        $articleContainer.spin false
+      .fail (jqXHR) ->
+        tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
+        $articleContainer.html $tmpl tplName
+      .done (article) ->
+        article.formatedPublishTime = -> moment(@publish_at).format 'll'
+        $tmpl 'article', article
+
+    articleid = parseInt getParam(location.search, 'article'), 10
+    renderArticle() if articleid
+
+    categoryid = parseInt getParam(location.search, 'id'), 10
+    activeMenuItem 'article_collection', categoryid
+    requester.get("/articles?category=#{categoryid}").done (articles) ->
+      if not articleid and articles.length
+        articleid = articles[0].id
+        renderArticle()
+      $tmpl 'articleList', {articles: preprocessArticles(articles), categoryid}
+    .fail ->
+      $tmpl 'fetchListError'
+
+    # 如果是招商平台
+    $(".service-poilcy").removeClass('hidden') if categoryid is 128
+

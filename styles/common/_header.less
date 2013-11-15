@@ -15,8 +15,10 @@
   }
 
   .menu-list {
-    font-size: 0;
+    @width: 1100px;
+    max-width: @width;
     overflow: hidden;
+    font-size: 0;
 
     ul {
       margin-top: 0;
@@ -26,7 +28,7 @@
     }
 
     li {
-      width: (@container / 7);
+      width: ((@width - 30px) / 8);
       font-size: @font-size-base;
 
       > a {

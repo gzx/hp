@@ -68,11 +68,22 @@ a:active, a.active {
     padding: 8px 20px;
     line-height: 1.5;
     font-size: 14px;
-    background: #fbf8f8;
 
     i.glyphicon {
       margin: 0 5px;
       color: @link-color-active;
+    }
+
+    &.sr-only {
+      padding: 0;
+    }
+  }
+
+  .item-list {
+    line-height: 35px;
+
+    > ul {
+      padding: 0 20px;
     }
   }
 }

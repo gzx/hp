@@ -24,14 +24,30 @@ module.exports = (grunt) ->
       main:
         options:
           pretty: true
-          data: (dest, src) ->
-            src = src[0]
+          data: (dest, [src]) ->
             modulePath = src.replace sysPath.extname(src), ''
+
             jsModuleExist = grunt.file.exists modulePath + '.js'
             jsonModuleExist = grunt.file.exists modulePath + '.json'
             coffeeModuleExist = grunt.file.exists modulePath + '.coffee'
-            return {} unless jsModuleExist or jsonModuleExist or coffeeModuleExist
-            require './' + modulePath
+
+            if jsModuleExist or jsonModuleExist or coffeeModuleExist
+              data = require './' + modulePath
+            else
+              data = {}
+
+            [
+              file: 'partials/_header'
+              dataname: 'header'
+            ,
+              file: 'partials/_footer'
+              dataname: 'footer'
+            ].forEach ({file, dataname}) ->
+              path = './' + sysPath.join sysPath.dirname(src), 'partials/_header'
+              data[dataname] = require path
+
+            data
+
         expand: true
         cwd: 'pages'
         src: ['**/*.jade']

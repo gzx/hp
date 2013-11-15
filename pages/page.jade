@@ -22,19 +22,9 @@ block append scripts
       $tmpl 'page', content: '找不到该页面'
       return
 
-    activeMenuItem = (pageId) ->
-      $items = $ '.menu-list li > a'
-
-      $items.filter (index) ->
-        $item = $items.eq index
-        matchs = $item.attr('href').match /\/?([^\/]+)$/
-        return false unless matchs and matchs[1]
-        matchs[1] is "page.html?id=#{pageId}"
-      .addClass 'active'
-
     requester.get("/articles/pages/#{matchs[2]}").done (page) ->
       $('title').text page.name
-      activeMenuItem page.id
+      activeMenuItem 'page', page.id
       $tmpl 'page', page
     .fail ->
       $tmpl 'page', content: '请求数据失败'

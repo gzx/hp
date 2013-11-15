@@ -5,9 +5,10 @@ header.page-header
 
   .menu-list.container
     ul.list-inline
-      each menu in [{name: '首页', pageName: 'index', href: 'index.html'}, {name: '新闻', pageName: 'news', href: 'news.html'}, {name: '园区介绍', id: 217}, {name: '服务政策', pageName: 'service-poilcy', href: 'service_poilcy.html'}, {name: '入驻企业', id: 175}, {name: '移动APP', id: 222}, {name: '社区', href: 'javascript:;'}]
+      each menu in header.links
         li
           - var activeClass = menu.pageName == pageName ? 'active' : '';
-          - if (menu.id != null) { menu.href = 'page.html?id=' + menu.id }
+          - if (menu.pageid != null) { menu.href = 'page.html?id=' + menu.pageid }
+          - if (menu.categoryid != null) { menu.href = 'article_collection.html?id=' + menu.categoryid }
           a(href=menu.href, class=activeClass)= menu.name
 
