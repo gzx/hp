@@ -179,7 +179,16 @@ do -> # config app [[[
 
   window.reqconf =
     urlRoot: "/api/apps/#{appid}"
+
     appid: appid
+
+    imageProcesser: (url, width, height) ->
+      # 防止出现 base64 的图片
+      return url unless /^http(s)?:/.test url
+      # 防止出现其他站点的图片
+      return url unless /images\.(appatom|gezbox)\.com/.test url
+      "#{url}!#{width or ''}x#{height or ''}"
+
     poilcyCategory: (categories) ->
       validateIds = [108, 105, 106, 107]
       return validateIds unless categories

@@ -32,7 +32,7 @@ block content
             </header>
             {{#renderImage}}
             <section class="article-image">
-              <img src="{{image}}" width="670" height="300">
+              <img src="{{image}}" />
             </section>
             {{/renderImage}}
             <section class="article-intro">
@@ -105,10 +105,7 @@ block append scripts
           article.renderImage = false
         else
           article.renderImage = true
-          if /http:/.test image
-            article.image = image + '!670x300'
-          else
-            article.image = image
+          article.image = reqconf.imageProcesser image, 670, 300
 
       articles
 

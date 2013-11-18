@@ -6,10 +6,6 @@ cleanHtml = (str) ->
   return cleanText if cleanText.length < 100
   cleanText.substr(0, 95) + "..."
 
-fitImageFactory = (width = "", height = "") ->
-  ->
-    @image + "!#{width}x#{height}"
-
 $('.header').click ->
   $.scrollTo '.body', 500, margin: true
 
@@ -18,7 +14,7 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
   data =
     list: resp
     cleanRecommendations: -> cleanHtml @target.context.content
-    fitImage: fitImageFactory 520, 355
+    fitImage: -> reqconf.imageProcesser @image, 520, 355
     makeLink: ->
       switch @target.type
         when "article" then $tmpl.linkArticle @target.id
@@ -49,12 +45,9 @@ requester.get "/articles", {count: 15}, (resp) ->
       image = $('<div>').html(@content).find('img').first().attr 'src'
       unless image
         random = Math.ceil Math.random()*10
-        return "./images/random/#{random}.jpg"
+        image = "./images/random/#{random}.jpg"
 
-      if /http:/.test image
-        "#{image}!140x140"
-      else
-        image
+      reqconf.imageProcesser image, 140, 140
 
   articleListHtml = $tmpl 'articleList', data
   $(".news ul").html articleListHtml
