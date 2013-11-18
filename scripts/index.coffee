@@ -28,11 +28,7 @@ requester.get "/recommendations", type: "article_banner", (resp) ->
     .find(".item").first().addClass "active"
 
 requester.get "/articles", {count: 15}, (resp) ->
-  result = []
-  for article in resp
-    if reqconf.newsCategory article.category.id
-      result.push article
-
+  result = (article for article in resp when reqconf.newsCategory([article.category]).length)
   result = result.slice 0, 4
 
   data =
