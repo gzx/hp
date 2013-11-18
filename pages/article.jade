@@ -29,7 +29,7 @@ block content
 
     .aside.pull-right.col-md-3
       .aside-module.category-list
-        h2.aside-module-heading 新闻分类
+        h2.aside-module-heading.sr-only 新闻分类
         ul.list-unstyled
 
         script(id="categoryList", data-tmpl-html=".category-list > ul.list-unstyled", type="text/template").
@@ -49,9 +49,6 @@ block append scripts
   script(src="scripts/momentjs/moment.js")
   script(src="scripts/momentjs/lang/zh-cn.js")
   :coffee
-    filterValidCategories = (categories) ->
-      (category for category in categories when reqconf.newsCategory category.id)
-
     $articleContainer = $('article').spin()
     $categoryList = $ ".category-list > ul.list-unstyled"
     categoryListLoadDefer = $.Deferred()
@@ -74,7 +71,7 @@ block append scripts
         $categoryList.find("a[data-category-id='#{article.category.id}']").addClass 'active'
 
     requester.get('/articles/categories').done (categories) ->
-      categories = filterValidCategories categories
+      categories = reqconf.newsCategory categories
       $tmpl 'categoryList', {categories}
       categoryListLoadDefer.resolve()
     .fail ->
