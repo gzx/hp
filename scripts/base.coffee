@@ -190,32 +190,13 @@ do -> # config app [[[
       "#{url}!#{width or ''}x#{height or ''}"
 
     poilcyCategory: (categories) ->
-      validateIds = [108, 105, 106, 107]
-      return validateIds unless categories
-
-      result = []
-
-      for category in categories
-        index = validateIds.indexOf category.id
-        continue if index is -1
-        result[index] = category
-
-      result
-
-    settledEnterpriseCategory: (id) ->
-      if id? then id is 109 else 109
+      for category in categories when category.name is '服务与政策'
+        return category.sub_categories
+      []
 
     newsCategory: (categories) ->
-      result = for category in categories
-        continue if reqconf.poilcyCategory([category]).length
-        continue if reqconf.settledEnterpriseCategory category.id
-        continue if category.id in [126, 127, 128]
-        category
-      for category, index in result
-        continue if category.id isnt 104
-        result.splice index, 1
-        result.push category
-
-      result
+      for category in categories when category.name is '新闻中心'
+        return category.sub_categories
+      []
 # ]]]
 

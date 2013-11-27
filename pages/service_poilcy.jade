@@ -26,7 +26,7 @@ block content
   .poilcy-area.container
     ul.list-unstyled.poilcy-categories.col-md-3
     script(id="categoryList", type='text/template').
-      {{^data}}<li>当前还没有更新任何相关政策</li>{{/data}}
+      {{^data}}<li>尚未任何相关政策</li>{{/data}}
       {{#data}}
         <li data-category-id="{{id}}">
           <a href="javascript:;">{{name}}</a>
@@ -62,7 +62,9 @@ block append scripts
     $categoryContainer = $('.poilcy-categories').on 'click', '> li', (event) ->
       $categoryContainer.find('> li').removeClass 'active'
       $clickElem = $(event.currentTarget).addClass 'active'
-      renderArticleList parseInt $clickElem.attr('data-category-id'), 10
+      categoryid = $clickElem.attr('data-category-id')
+      return unless categoryid
+      renderArticleList parseInt categoryid, 10
 
     requester.get('/articles/categories').done (data) ->
       categories = reqconf.poilcyCategory data

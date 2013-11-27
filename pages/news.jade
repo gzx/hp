@@ -118,10 +118,6 @@ block append scripts
       $tmpl 'paginationList', data
 
     renderArticleList = (category, page) ->
-      unless reqconf.newsCategory category
-        $tmpl('categoryNotExist').last().addClass 'last'
-        return
-
       $newsContainer = $('.news-container').spin()
       requester.get(
         '/articles'
@@ -150,19 +146,17 @@ block append scripts
       categoryId = parseInt(matchs[2], 10) if matchs?[2]?
       renderArticleList categoryId, page if categoryId?
 
-    requester.get('/articles/categories').done (categories) ->
-      articleRendered = true
-      categories = reqconf.newsCategory categories
-      unless categoryId?
-        articleRendered = false
-        categoryId = categories?[0]?.id
+    requester.get('/articles/categories').done (serverCategories) ->
+      categories = reqconf.newsCategory serverCategories
       categories = for category in categories
         category.active = category.id is categoryId
         category
 
       $tmpl 'categoryList', {categories}
-      return if articleRendered
-      renderArticleList categoryId, page
+      return if categoryId?
+      for category in serverCategories when category.name is '新闻中心'
+        renderArticleList category.id, page
+        return
     .fail ->
       $(".category-list > ul.list-unstyled").html $('#fetchListError').html()
 
