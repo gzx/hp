@@ -45,7 +45,9 @@ block content
               <a {{#active}}class="active"{{/active}} href="article_collection.html?id={{../categoryid}}&article={{id}}">{{name}}</a>
             </li>
           {{/articles}}
-
+          <li class="park-intro hidden">
+            <a href="park_intro.html">园区介绍</a>
+          </li>
       .aside-module.service-poilcy.hidden
         h2.aside-module-heading
           a(href="service_poilcy.html") 服务与政策
@@ -100,6 +102,10 @@ block append scripts
         articleid = articles[0].id
         renderArticle()
       $tmpl 'articleList', {articles: preprocessArticles(articles), categoryid}
+
+      # 如果是我们的园区
+      $(".park-intro").removeClass('hidden') if categoryid is 127
+      
     .fail ->
       $tmpl 'fetchListError'
 
