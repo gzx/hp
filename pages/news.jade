@@ -100,7 +100,7 @@ block append scripts
 
     preprocessArticles = (articles) ->
       for article in articles
-        image = $('<div>').html(article.content).find('img').first().attr 'src'
+        image = article.image_ids?[0] or $('<div>').html(article.content).find('img').first().attr 'src'
         unless image
           article.renderImage = false
         else

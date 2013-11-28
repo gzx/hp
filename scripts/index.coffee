@@ -40,7 +40,7 @@ requester.get('/articles/categories').done (serverCategories) ->
         return flatContent if flatContent.length < 27
         flatContent.substr(0, 27) + "..."
       image: ->
-        image = $('<div>').html(@content).find('img').first().attr 'src'
+        image = @image_ids?[0] or $('<div>').html(@content).find('img').first().attr 'src'
         unless image
           random = Math.ceil Math.random()*10
           image = "./images/random/#{random}.jpg"
