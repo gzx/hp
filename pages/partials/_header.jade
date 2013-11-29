@@ -7,9 +7,23 @@ header.page-header
   .menu-list.container
     ul.list-inline
       each menu in header.links
-        li
+        li.menu
           - var activeClass = menu.pageName == pageName ? 'active' : '';
           - if (menu.pageid != null) { menu.href = 'page.html?id=' + menu.pageid }
           - if (menu.categoryid != null) { menu.href = 'article_collection.html?id=' + menu.categoryid }
           a(href=menu.href, class=activeClass)= menu.name
+      li.dropdown
+        a#dropdown-toggle(role="button", data-toggle="dropdown", data-target="#", href="javascript:")
+          img(src="./images/header/china.png", alt="中文")
+        ul.dropdown-menu(role="menu", aria-labelledby="dropdown-toggle")
+          li
+            a(href="javascript:")
+              img(src="./images/header/english.png", alt="英语")
+          li
+            a(href="javascript:")
+              img(src="./images/header/japan.png", alt="日文")
+          li
+            a(href="javascript:")
+              img(src="./images/header/korea.png", alt="韩语")
+
 

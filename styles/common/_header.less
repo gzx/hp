@@ -17,7 +17,6 @@
     @width: 1100px;
     max-width: @width;
     min-width: @width;
-    overflow: hidden;
     font-size: 0;
 
     ul {
@@ -27,8 +26,8 @@
       border-bottom: 1px solid @border-normal;
     }
 
-    li {
-      width: ((@width - 30px) / 8);
+    .menu {
+      width: ((@width - 30px) / 9);
       font-size: @font-size-base;
 
       > a {
@@ -36,6 +35,31 @@
         padding-bottom: 25px;
         display: block;
         text-align: center;
+      }
+    }
+    .dropdown {
+      #dropdown-toggle {
+        display: block;
+        padding: 5px 0 12px 0;
+        width: 45px;
+        background: url(../images/header/arrows.png) no-repeat center bottom;
+        outline: 0;
+      }
+      .dropdown-menu {
+        top: 105%;
+        left: 5px;
+        padding: 0;
+        min-width: 0;
+        width: 45px;
+        border: 1px solid #EAEAEA;
+        box-shadow: none;
+        border-radius: 0;
+        li a {
+          padding: 5px;
+          &:hover {
+            background: #FBF8F8;
+          }
+        }
       }
     }
   }
