@@ -63,6 +63,7 @@ module.exports = (grunt) ->
         dest: 'public/scripts/vendor.js'
         src: [
           'bower_components/jquery/jquery.js'
+          'bower_components/bowser/bowser.js'
           'bower_components/bootstrap/js/transition.js'
           'bower_components/bootstrap/js/dropdown.js'
           'bower_components/templayed.js/src/templayed.js'

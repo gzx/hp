@@ -200,3 +200,18 @@ do -> # config app [[[
       []
 # ]]]
 
+do ->
+  if bowser.c
+    $(".blur").removeClass "hide"
+    $(".warning").removeClass "hide"
+  else if bowser.msie and bowser.version < 10
+    $(".alert").removeClass "hide"
+    $("body").addClass "header-hold"
+
+  $el = $(".alert .close")
+  $el.on "click", ->
+    $(".alert").addClass "hide"
+    $("body").removeClass "header-hold"
+
+
+

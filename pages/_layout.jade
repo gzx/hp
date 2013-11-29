@@ -16,7 +16,43 @@ body
 
   block content
 
+  block detector
+    .blur.hide
+    .warning.hide
+      p.
+        您的浏览器版本过低，无法正常访问网站<br>
+        请升级到最新版本，或下载其他浏览器
+      ul.list-unstyled.list-inline
+        li
+          a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
+            img(src="./images/detector/chrome.png")
+            .media-body Chorme
+        li
+          a.media(href="http://chrome.360.cn/", target="_blank")
+            img(src="./images/detector/360.png")
+            .media-body 360极速
+        li
+          a.media(href="http://www.firefox.com.cn/", target="_blank")
+            img(src="./images/detector/firefox.png")
+            .media-body Firefox
+    .alert.hide
+      .wrap
+        p.
+          您的浏览器版本过低，无法正常访问网站,请升级到最新版本，或下载其他浏览器
+        ul.list-unstyled.list-inline
+          li
+            a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
+              img(src="./images/detector/chrome.png")
+          li
+            a.media(href="http://chrome.360.cn/", target="_blank")
+              img(src="./images/detector/360.png")
+          li
+            a.media(href="http://www.firefox.com.cn/", target="_blank")
+              img(src="./images/detector/firefox.png")
+        .close.pull-right
+
   block scripts
     script(src="scripts/vendor.js")
     script(src="scripts/base.js")
+
 
