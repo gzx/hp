@@ -20,24 +20,29 @@ block content
         {{^articles}}<li>该分类下暂时没有新闻</li>{{/articles}}
         {{#articles}}
         <li>
+          {{#renderImage}}
+          <section class="article-image">
+            <img src="{{image}}" />
+          </section>
+          {{/renderImage}}
           <article>
-            <header>
-              <h1 class="article-title">
-                <a href={{../linkArticle}}>{{name}}</a>
-              </h1>
-              <p class="article-meta">
-                <time>{{../formatedPublishTime}}</time>
-                {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
-              </p>
-            </header>
-            {{#renderImage}}
-            <section class="article-image">
-              <img src="{{image}}" />
-            </section>
-            {{/renderImage}}
+            <h1 class="article-title">
+              <a href={{../linkArticle}}>{{name}}</a>
+            </h1>
+            <p class="article-meta">
+              <time class="article-publish-time">
+                <span class="article-publish-month">{{../formatPublishMonth}}</span>
+                <span class="sr-only">-</span>
+                <span class="article-publish-day">{{../formatPublishDay}}</span>
+              </time>
+              <span class="article-view-count">浏览：{{view_count}}</span>
+              {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
+            </p>
             <section class="article-intro">
               <p>{{{../cleanFirstParagraph}}}</p>
-              <p><a href="{{../linkArticle}}" class="article-more">继续阅读 >></a></p>
+            </section>
+            <section>
+              <a href="{{../linkArticle}}" class="article-more">继续阅读</a>
             </section>
             <footer class="article-share"></footer>
           </article>
@@ -91,7 +96,12 @@ block append scripts
   script(src="scripts/momentjs/lang/zh-cn.js")
   :coffee
     articlesData =
-      formatedPublishTime: -> moment(@publish_at).format 'll'
+      formatPublishDay: ->
+        moment(@publish_at).format 'DD'
+
+      formatPublishMonth: ->
+        moment(@publish_at).format 'YYYY-MM'
+
       cleanFirstParagraph: ->
         cleanText = $.trim $('<div>').html(@content).find('div, p').first().text()
         return cleanText if cleanText.length < 190
@@ -105,7 +115,7 @@ block append scripts
           article.renderImage = false
         else
           article.renderImage = true
-          article.image = reqconf.imageProcesser image, 670, 300
+          article.image = image
 
       articles
 

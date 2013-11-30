@@ -1,4 +1,4 @@
-
+@import "../../bower_components/bootstrap/less/variables.less";
 @import '../_variables';
 
 .col-md-9, .col-md-3 {
@@ -13,18 +13,35 @@
   margin-top: 60px;
 }
 
+
 .article-title {
+  display: inline-block;
   margin-top: 0;
+  max-width: 590px;
   font-weight: normal;
   font-size: 24px;
-  color: #666;
+  color: @link-color-active;
 }
 
 article.col-md-9 {
   min-height: 300px;
 
-  a {
-    color: @link-color-active;
+  aside {
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid @border-normal;
+    color: lighten(@text-color, 30%);
+
+    a {
+      color: lighten(@text-color, 30%);
+      &:hover {
+        color: @link-color-active;
+      }
+    }
+
+    .list-inline {
+      margin: 0;
+    }
   }
 
   img {
@@ -34,19 +51,17 @@ article.col-md-9 {
   }
 }
 
-.aside {
-  .category-list {
-    line-height: 35px;
+.article-content a {
+  color: @link-color-active;
+}
 
-    > ul {
-      padding: 0 30px;
-    }
-  }
+.aside {
   .service-poilcy a {
     display: inline-block;
     padding-right: 20px;
     background: url(../../images/article/service_poilcy.png) center right no-repeat;
   }
+
   .ad {
     ul li {
       margin-bottom: 30px;

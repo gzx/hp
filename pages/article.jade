@@ -15,10 +15,27 @@ block content
     article.col-md-9
 
     script(id='article', data-tmpl-html="article", type="text/template").
-      <h1 class="article-title">{{name}}</h1>
-      <p class="article-meta">
-        <time>{{formatedPublishTime}}</time>
-      </p>
+      <header class="clearfix">
+        <h1 class="article-title">{{name}}</h1>
+
+        <time class="article-publish-time pull-right">
+          <span class="article-publish-month">{{formatPublishMonth}}</span>
+          <span class="sr-only">-</span>
+          <span class="article-publish-day">{{formatPublishDay}}</span>
+        </time>
+      </header>
+
+      <aside class="clearfix">
+        <span class="article-view-count pull-left">浏览：{{view_count}}次</span>
+
+        <nav class="article-nav pull-right">
+          <ul class="list list-inline">
+            <li><a href="javascript:;">&lt;&nbsp;上一篇</a></li>
+            <li><a href="javascript:;">下一篇&nbsp;&gt;</a></li>
+          </ul>
+        </nav>
+      </aside>
+
       <div class="article-content">{{{content}}}</div>
 
     script(id="articleNotExist", data-tmpl-html="article", type="text/template").
@@ -30,7 +47,7 @@ block content
     .aside.pull-right.col-md-3
       .aside-module.category-list
         h2.aside-module-heading.sr-only 新闻分类
-        ul.list-unstyled
+        ul.list-unstyled.item-list
 
         script(id="categoryList", data-tmpl-html=".category-list > ul.list-unstyled", type="text/template").
           {{^categories}}<li>暂时没有任何分类</li>{{/categories}}
@@ -65,7 +82,8 @@ block append scripts
       tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
       $articleContainer.html $tmpl tplName
     .done (article) ->
-      article.formatedPublishTime = -> moment(@publish_at).format 'll'
+      article.formatPublishDay = -> moment(@publish_at).format 'DD'
+      article.formatPublishMonth = -> moment(@publish_at).format 'YYYY-MM'
       $tmpl 'article', article
       categoryListLoadDefer.promise().done ->
         $categoryList.find("a[data-category-id='#{article.category.id}']").addClass 'active'
