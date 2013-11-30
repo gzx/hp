@@ -67,10 +67,9 @@ a:active, a.active {
 
 .aside {
   .aside-module {
-    padding: 30px 0;
-    border-top: 1px solid @border-normal;
+    padding: 0 0 30px 0;
   }
-  
+
   .aside-module-heading {
     margin: 0;
     padding: 0 20px;
@@ -90,9 +89,55 @@ a:active, a.active {
   .item-list {
     line-height: 35px;
 
-    > ul {
-      padding: 0 20px;
+    a {
+      position: relative;
+      display: block;
+      padding: 0 40px;
+      &:before {
+        position: absolute;
+        left: 30px;
+        top: 17px;
+        float: left;
+        width: 2px;
+        height: 1px;
+        content: ' ';
+        background-color: #808080;
+      }
+      &.active {
+        border-top: 1px solid @border-normal;
+        border-bottom: 1px solid @border-normal;
+      }
     }
+  }
+}
+
+.article-publish-time {
+  @day-font-size: 30px;
+  @day-padding-top: 5px;
+  // 最后的一像素是 font-size * line-height 后的小数点四舍五入多出来的东西
+  @day-height: @day-font-size * @line-height-base + @day-padding-top - 1px;
+  position: relative;
+  display: block;
+  width: 60px;
+  height: @day-height + @line-height-computed;
+
+  .article-publish-month, .article-publish-day {
+    display: block;
+    width: 60px;
+    color: white;
+    text-align: center;
+  }
+  .article-publish-month {
+    position: absolute;
+    top: @day-height;
+    background-color: #9fadad;
+  }
+  .article-publish-day {
+    position: absolute;
+    top: 0;
+    padding-top: @day-padding-top;
+    font-size: @day-font-size;
+    background-color: @link-color-active;
   }
 }
 
