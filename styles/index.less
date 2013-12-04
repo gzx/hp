@@ -63,11 +63,13 @@ a {
   }
   .carousel {
     @carousel-height: 355px;
-    width: 520px;
+    @carousel-width: 520px;
+    width: @carousel-width;
     height: @carousel-height;
     .carousel-inner {
       .item img {
         height: @carousel-height;
+        width: @carousel-width;
       }
     }
     .carousel-caption {
