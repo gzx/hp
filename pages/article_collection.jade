@@ -101,13 +101,12 @@ block append scripts
         articleid = articles[0].id
         renderArticle()
       $tmpl 'articleList', {articles: preprocessArticles(articles), categoryid}
-
-      # 如果是我们的园区
-      $(".park-intro").removeClass('hidden') if categoryid is 127
-      
     .fail ->
       $tmpl 'fetchListError'
 
-    # 如果是招商平台
-    $(".service-poilcy").removeClass('hidden') if categoryid is 128
+    requester.get("/articles/categories").done (categories) ->
+      for category in categories when category.id is categoryid
+        $('title').text category.name + ' - HIPARK'
+        $(".service-poilcy").removeClass('hidden') if category.name is '招商平台'
+        $(".park-intro").removeClass('hidden') if category.name is '我们的园区'
 

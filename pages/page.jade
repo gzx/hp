@@ -1,8 +1,5 @@
 extends _layout
 
-block title
-  title 页面
-
 block content
   pageName = 'settled-enterprises'
 
@@ -23,7 +20,7 @@ block append scripts
       return
 
     requester.get("/articles/pages/#{matchs[2]}").done (page) ->
-      $('title').text page.name
+      $('title').text page.name + ' - HIPARK'
       activeMenuItem 'page', page.id
       $tmpl 'page', page
     .fail ->
