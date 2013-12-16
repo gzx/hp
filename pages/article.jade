@@ -3,9 +3,6 @@ extends _layout
 block append styles
   link(rel="stylesheet", type="text/css", href="styles/pages/article.css")
 
-block title
-  title 园区新闻
-
 block content
   pageName = "ariticle"
 
@@ -99,6 +96,7 @@ block append scripts
       article.formatPublishDay = -> moment(@publish_at).format 'DD'
       article.formatPublishMonth = -> moment(@publish_at).format 'YYYY-MM'
       $tmpl 'article', article
+      $('title').text article.name + ' - HIPARK'
       categoryListLoadDefer.promise().done ->
         $categoryList.find("a[data-category-id='#{article.category.id}']").addClass 'active'
 
