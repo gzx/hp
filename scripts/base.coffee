@@ -67,7 +67,7 @@ do -> # $tmpl [[[
     throw Error 'template element not exist' unless $tmplElem.length
 
     $tmplElemDataset = $tmplElem.data()
-    resultHtml = templayed($tmplElem.html()) data
+    resultHtml = Handlebars.compile($tmplElem.html()) data
     $contents = $('<div>').html(resultHtml).contents()
 
     action = do ->

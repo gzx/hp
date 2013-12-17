@@ -66,7 +66,7 @@ module.exports = (grunt) ->
           'bower_components/bowser/bowser.js'
           'bower_components/bootstrap/js/transition.js'
           'bower_components/bootstrap/js/dropdown.js'
-          'bower_components/templayed.js/src/templayed.js'
+          'bower_components/handlebars/handlebars.js'
           'bower_components/spin.js/dist/spin.js'
         ]
 
