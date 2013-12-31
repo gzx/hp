@@ -1,0 +1,32 @@
+extends _layout
+
+block append styles
+  link(rel="stylesheet", type="text/css", href="styles/browser.css")
+
+block content
+  pageName = "community"
+
+  include partials/_header.jade
+  .browser
+    p.
+      您的浏览器过于陈旧，无法正常访问网站<br>
+      请升级到最新版本，或下载其他浏览器
+    ul.list-unstyled.list-inline
+      li
+        a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
+          img(src="./images/share/chrome.png")
+          div 谷歌浏览器
+      li
+        a.media(href="http://chrome.360.cn/", target="_blank")
+          img(src="./images/share/360.png")
+          div 360极速浏览器
+      li
+        a.media(href="http://www.firefox.com.cn/", target="_blank")
+          img(src="./images/share/firefox.png")
+          div 火狐浏览器
+
+
+  include partials/_footer.jade
+
+block detector
+block scripts

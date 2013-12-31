@@ -1,4 +1,5 @@
 @import "./_variables.less";
+@import "./_shortcut.less";
 
 html {
   height: 100%;
@@ -6,7 +7,6 @@ html {
 }
 
 body {
-  min-width: 1100px;
   background: #fbf8f8;
   font-size: @font-size-base;
   color: @text-color;
@@ -19,18 +19,21 @@ a {
   }
 }
 
+.container {
+  width: @container;
+}
+
 .header {
-  height: 900px;
   margin: 0;
+  height: 900px;
   background: url(../images/index/banner.jpg) #caf4f3 no-repeat center center;
-
 }
 
-@media screen and (max-width: 1024px){
-.header {
-  height: 768px;
-  background: url(../images/index/banner1024.jpg) #caf4f3 no-repeat center center;
-}
+@media screen and (min-width: 1024px){
+  .header {
+    height: 768px;
+    background: url(../images/index/banner1024.jpg) #caf4f3 no-repeat center center;
+  }
 }
 
 .page-header .menu-list {
@@ -47,6 +50,8 @@ a {
   width: 960px;
   background: white;
   box-shadow: 0px 2px 3px #E2E2E2;
+  *overflow: hidden;
+
   .page-header {
     margin: 0;
     .menu-list {
@@ -61,6 +66,7 @@ a {
     padding: 50px 60px;
     border-top: 1px solid #eee;
   }
+
   .carousel {
     @carousel-height: 355px;
     @carousel-width: 520px;
@@ -68,8 +74,10 @@ a {
     height: @carousel-height;
     .carousel-inner {
       .item img {
+        display: block;
         height: @carousel-height;
         width: @carousel-width;
+        z-index: 99;
       }
     }
     .carousel-caption {
@@ -78,7 +86,10 @@ a {
       bottom: 0;
       padding: 11px 25px;
       text-align: left;
+      background: black;
       background: rgba(0, 0, 0, 0.5);
+      *width: 520px;
+      z-index: 999;
       &:hover {
         color: white;
         text-decoration: none;
@@ -99,15 +110,16 @@ a {
     .carousel-control-right {
       bottom: 0;
       background: url(../images/share/right.png) center right no-repeat;
-
     }
-
   }
+
   .news {
     width: 280px;
     ul {
       margin: 0;
       padding: 0;
+      *height: 310px;
+      overflow: hidden;
     }
     h3 {
       padding: 7px 15px;
@@ -125,14 +137,17 @@ a {
     }
     .media {
       margin: 0 0 10px 0;
+     *height: 70px;
+     // 防止 IE8 下 .media-body 上方会多出一行高的空白
+     font-size: 0;
     }
-    .media-object {
-      width: 70px;
-      height: 70px;
+    .media-object img {
+      display: block;
     }
     .media-heading, .media-body{
       font-size: 12px;
       color: @text-color;
+      *width: 200px;
     }
     .media-body {
       padding-top: 5px;
@@ -154,7 +169,8 @@ a {
   }
 
   .summary {
-    margin-bottom: 45px;
+    margin: 0 0 45px 0;
+
     li {
       margin-right: 40px;
       padding: 0;
@@ -184,9 +200,12 @@ a {
   }
 
   .artwork {
+    margin: 0;
     li {
       padding: 0;
       margin-right: 40px;
+      *display: inline;
+      zoom: 1;
     }
     img {
       width: 240px;
@@ -204,7 +223,7 @@ a {
       font-size: 12px;
     }
     a {
-      display: inline-block;
+      .inline-block();
       padding-right: 45px;
       line-height: 30px;
       color: @link-color-active;
@@ -213,28 +232,28 @@ a {
     }
   }
   .articles {
-    background: url(../images/index/bg.png) repeat-x;
+    background: url(../images/index/support_bg.jpg) repeat-x;
     .square {
-      display: inline-block;
+      .inline-block();
       margin: 0 14px -2px 0;
       width: 14px;
       height: 14px;
       background: #d9d9d9;
     }
     h3 {
-      display: inline-block;
+      .inline-block();
       margin: 0 50px 0 0;
       padding-left: 65px;
       line-height: 70px;
       font-size: 18px;
-      background: url(../images/index/award.png) center left no-repeat;
     }
     ul {
-      display: inline-block;
+      .inline-block();
       margin: 0;
       width: 540px;
       vertical-align: middle;
       li {
+        padding: 0;
         width: 260px;
       }
     }
@@ -247,4 +266,5 @@ a {
 .page-footer {
   margin-top: 0;
   box-shadow: none;
+  background-color: transparent;
 }

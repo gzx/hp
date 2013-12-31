@@ -1,5 +1,6 @@
 @import "../../bower_components/bootstrap/less/variables.less";
 @import "../_variables.less";
+@import '../_shortcut.less';
 
 .col-md-9, .col-md-3 {
   padding: 0;
@@ -7,6 +8,7 @@
 
 .col-md-9 {
   padding-right: 50px;
+  *float: left;
 }
 
 .body {
@@ -17,13 +19,14 @@
   margin-top: -30px;
   min-height: 300px;
 
-  .article-list > li {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid @border-normal;
+  .article-list {
+    overflow: hidden;
 
-    &.last {
-      border-bottom: none;
+    .article-container {
+      padding-top: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid @border-normal;
+      margin-bottom: -1px;
     }
   }
 
@@ -44,6 +47,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    _margin-left: -90px;
   }
 
   .article-view-count {
@@ -77,28 +81,19 @@
   }
 }
 
-.pagination {
-  li > a {
-    border: none;
-  }
-
-  li > a:hover {
-    color: #fff;
-    background: @link-color-active;
-  }
-
-  .active {
-    & > a, & > a:hover {
-      background: @link-color-active;
-    }
-  }
-}
-
 .aside {
   .aside-module .download {
-    display: inline-block;
-    padding-right: 25px;
-    background: url(../../images/share/download.png) center right no-repeat;
+    a {
+      vertical-align: bottom;
+      zoom: 1;
+    }
+    span {
+      .inline-block();
+      width: 25px;
+      height: 20px;
+      vertical-align: bottom;
+      background: url(../../images/share/download.jpg) center right no-repeat;
+    }
   }
 }
 

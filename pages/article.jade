@@ -12,8 +12,8 @@ block content
     article.col-md-9
 
     script(id='article', data-tmpl-html="article", type="text/template").
-      <header class="clearfix">
-        <h1 class="article-title">{{name}}</h1>
+      <header class="clearfix article-title">
+        <h1 class="pull-left">{{name}}</h1>
 
         <time class="article-publish-time pull-right">
           <span class="article-publish-month">{{formatPublishMonth}}</span>
@@ -33,7 +33,7 @@ block content
         </nav>
       </aside>
 
-      <div class="article-content">{{{content}}}</div>
+      <div class="article-content" data-tmpl-unescape>{{{content}}}</div>
 
     script(id="articleNotExist", data-tmpl-html="article", type="text/template").
       <p>获取文章信息失败</p>
@@ -57,19 +57,19 @@ block content
         script(id="fetchListError", type="text/template").
           <li>获取信息失败</li>
 
-      .aside-module.ad
+      .aside-module.recommendation
         ul.list-unstyled
           li
             a(href="http://hipark.cn/page.html?id=222", target="_blank")
-              img(src="images/article/ad1.png")
+              img(src="images/article/recommendation1.png")
 
           li
-            a(href="bbs/")
-              img(src="images/article/ad2.png")
+            a(href="/bbs/")
+              img(src="images/article/recommendation2.png")
 
           li
             a(href="javascript:")
-              img(src="images/article/ad3.png")
+              img(src="images/article/recommendation3.png")
 
   include partials/_footer.jade
 
@@ -93,10 +93,10 @@ block append scripts
       tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
       $articleContainer.html $tmpl tplName
     .done (article) ->
-      article.formatPublishDay = -> moment(@publish_at).format 'DD'
-      article.formatPublishMonth = -> moment(@publish_at).format 'YYYY-MM'
+      article.formatPublishDay = -> momentFromISO(@publish_at).format 'DD'
+      article.formatPublishMonth = -> momentFromISO(@publish_at).format 'YYYY-MM'
       $tmpl 'article', article
-      $('title').text article.name + ' - HIPARK'
+      document.title = article.name + ' - HIPARK'
       categoryListLoadDefer.promise().done ->
         $categoryList.find("a[data-category-id='#{article.category.id}']").addClass 'active'
 

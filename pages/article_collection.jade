@@ -26,7 +26,7 @@ block content
       <p class="article-meta">
         <time>{{formatedPublishTime}}</time>
       </p>
-      <div class="article-content">{{{content}}}</div>
+      <div class="article-content" data-tmpl-unescape>{{{content}}}</div>
 
     script(id="articleNotExist", data-tmpl-html="article", type="text/template").
       <p>文章不存在</p>
@@ -88,7 +88,7 @@ block append scripts
         tplName = if jqXHR.statusCode() is 404 then 'articleNotExist' else 'fetchArticleError'
         $articleContainer.html $tmpl tplName
       .done (article) ->
-        article.formatedPublishTime = -> moment(@publish_at).format 'll'
+        article.formatedPublishTime = -> momentFromISO(@publish_at).format 'll'
         $tmpl 'article', article
 
     articleid = parseInt getParam(location.search, 'article'), 10
@@ -106,7 +106,7 @@ block append scripts
 
     requester.get("/articles/categories").done (categories) ->
       for category in categories when category.id is categoryid
-        $('title').text category.name + ' - HIPARK'
+        document.title = category.name + ' - HIPARK'
         $(".service-poilcy").removeClass('hidden') if category.name is '招商平台'
         $(".park-intro").removeClass('hidden') if category.name is '我们的园区'
 

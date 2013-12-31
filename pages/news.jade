@@ -12,14 +12,12 @@ block content
   include partials/_header.jade
 
   .container.body
-    .col-md-9.news-container
+    .col-md-9.clearfix.news-container
       ul.list-unstyled.article-list
-      script(id='categoryNotExist', data-tmpl-html=".article-list", type="text/template").
-        <li>没有该新闻分类</li>
       script(id="articleList", data-tmpl-html=".article-list", type="text/template").
         {{^articles}}<li>该分类下暂时没有新闻</li>{{/articles}}
         {{#articles}}
-        <li>
+        <li class="article-container">
           {{#renderImage}}
           <section class="article-image">
             <img src="{{image}}" />
@@ -39,7 +37,7 @@ block content
               {{! <a href="{{../linkArticle} }">评论：{{comment_count} }</a> }}
             </p>
             <section class="article-intro">
-              <p>{{{../cleanFirstParagraph}}}</p>
+              <p data-tmpl-unescape>{{{../cleanFirstParagraph}}}</p>
             </section>
             <section>
               <a href="{{../linkArticle}}" class="article-more">继续阅读</a>
@@ -84,8 +82,9 @@ block content
           {{/categories}}
 
       .aside-module
-        h2.aside-module-heading
-          a(href="media_download.html").download 媒体资料下载
+        h2.aside-module-heading.download
+          a(href="media_download.html") 媒体资料下载
+          span
 
       .aside-module.recommendation
         ul.list-unstyled
@@ -112,10 +111,10 @@ block append scripts
   :coffee
     articlesData =
       formatPublishDay: ->
-        moment(@publish_at).format 'DD'
+        momentFromISO(@publish_at).format 'DD'
 
       formatPublishMonth: ->
-        moment(@publish_at).format 'YYYY-MM'
+        momentFromISO(@publish_at).format 'YYYY-MM'
 
       cleanFirstParagraph: ->
         cleanText = $.trim $('<div>').html(@content).find('div, p').first().text()
@@ -150,7 +149,7 @@ block append scripts
       ).done (articles, textStatus, jqXHR) ->
         $newsContainer.spin false
         articlesData.articles = preprocessArticles articles
-        $tmpl('articleList', articlesData).filter('li').last().addClass 'last'
+        $tmpl('articleList', articlesData).filter('li')
 
         totalNewsCount = parseInt jqXHR.getResponseHeader('X-Resource-Count'), 10
         renderPagination category, totalNewsCount, page

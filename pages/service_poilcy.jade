@@ -37,7 +37,7 @@ block content
       {{^data}}<li>当前还没有更新任何相关政策</li>{{/data}}
       {{#data}}
         <li>
-          <a href="{{../linkArticle}}">{{name}}</a>
+          <a class="pull-left" href="{{../linkArticle}}">{{name}}</a>
           <time class="pull-right">{{../formatedTime}}</time>
         </li>
       {{/data}}
@@ -53,7 +53,7 @@ block append scripts
     renderArticleList = (category) ->
       $poilcyContainer = $('.poilcies').spin()
       requester.get('/articles', {category}).done (data) ->
-        formatedTime = -> moment(@publish_at).format('ll')
+        formatedTime = -> momentFromISO(@publish_at).format('ll')
         articleListHml = $tmpl 'articleList', {data, formatedTime}
         $poilcyContainer.spin(false).html articleListHml
       .fail ->

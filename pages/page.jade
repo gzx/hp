@@ -8,7 +8,7 @@ block content
   .container.page-container
 
   script(id="page", data-tmpl-html=".page-container", type='text/template').
-    {{{content}}}
+    <div data-tmpl-unescape>{{{content}}}</div>
 
   include partials/_footer.jade
 
@@ -20,7 +20,7 @@ block append scripts
       return
 
     requester.get("/articles/pages/#{matchs[2]}").done (page) ->
-      $('title').text page.name + ' - HIPARK'
+      document.title = page.name + ' - HIPARK'
       activeMenuItem 'page', page.id
       $tmpl 'page', page
     .fail ->

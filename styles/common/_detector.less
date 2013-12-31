@@ -37,29 +37,34 @@
   }
 }
 .alert {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
+  margin: 0;
   background: #f3c743;
   color: white;
   font-size: 18px;
   border-radius: 0;
   z-index: 999;
   .wrap {
+    position: relative;
+    text-align:center;
+    zoom: 1;
     p, ul {
-      display: inline-block;
+      .inline-block();
       margin: 0;
     }
+    ul li {
+      .inline-block();
+      .media {
+        margin: 0 5px;
+        padding: 0;
+      }
+    }
     .close {
+      position: absolute;
+      top: 0;
+      right: 0;
       width: 30px;
       height: 30px;
-      background: url(../images/detector/close.png) no-repeat center center;
+      background: url(../images/detector/close.jpg) no-repeat center center;
     }
   }
-}
-
-.header-hold {
-  margin-top: 60px;
 }

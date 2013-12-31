@@ -49,9 +49,8 @@ module.exports = (grunt) ->
             data
 
         expand: true
-        cwd: 'pages'
-        src: ['**/*.jade']
-        dest: 'public/'
+        src: ['pages/**/*.jade']
+        dest: 'tmp/'
         ext: '.html'
         filter: (filepath) ->
           return true if grunt.file.isDir filepath
@@ -67,7 +66,8 @@ module.exports = (grunt) ->
           'bower_components/bootstrap/js/transition.js'
           'bower_components/bootstrap/js/dropdown.js'
           'bower_components/handlebars/handlebars.js'
-          'bower_components/spin.js/dist/spin.js'
+          'bower_components/spin.js/spin.js'
+          'bower_components/spin.js/jquery.spin.js'
         ]
 
     copy:
@@ -86,20 +86,38 @@ module.exports = (grunt) ->
         src: '**/*'
         dest: 'public/'
 
+    replace:
+      jade:
+        options:
+          patterns: [{
+            match: 'timestamp'
+            replacement: '<%= Date.now() %>'
+          }]
+          force: true
+        files: [
+          expand: true
+          cwd: 'tmp/pages/'
+          src: '**/*'
+          dest: 'public/'
+        ]
+
     watch:
       options: livereload: true
+      gruntfile:
+        files: ['Gruntfile.coffee']
+        tasks: ['build']
       scripts:
         files: 'scripts/**/*'
-        tasks: ['coffee']
+        tasks: ['coffee', 'replace']
       styles:
         files: 'styles/**/*'
-        tasks: ['less']
+        tasks: ['less', 'replace']
       pages:
         files: 'pages/**/*'
-        tasks: ['jade']
+        tasks: ['jade', 'replace']
       assets:
         files: 'assets/**/*'
-        tasks: ['copy']
+        tasks: ['copy', 'replace']
   )
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -113,7 +131,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-imagemin'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-replace'
 
-  grunt.registerTask 'build', ['coffee', 'less', 'jade', 'copy', 'concat']
+  grunt.registerTask 'build', ['coffee', 'less', 'jade', 'copy', 'concat', 'replace']
   grunt.registerTask 'default', ['build', 'watch']
 

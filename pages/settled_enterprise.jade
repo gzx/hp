@@ -16,7 +16,7 @@ block content
 
     script(id='article', data-tmpl-html="article", type="text/template").
       <h1 class="article-title">{{name}}</h1>
-      <div class="article-content">{{{content}}}</div>
+      <div class="article-content" data-tmpl-unescape>{{{content}}}</div>
 
     script(id="articleNotExist", data-tmpl-html="article", type="text/template").
       <p>企业不存在</p>

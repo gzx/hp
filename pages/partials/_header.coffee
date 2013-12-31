@@ -7,7 +7,7 @@ module.exports =
     {name: '招商平台', categoryid: 128}
     {name: '客服中心', categoryid: 126}
     {name: '移动APP', pageid: 222}
-    {name: '社区', href: 'bbs/'}
+    {name: '社区', pageName: 'community',href: 'bbs/'}
     {name: '一卡通', href: 'javascript:;'}
   ]
 

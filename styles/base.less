@@ -25,7 +25,7 @@
 @import "../bower_components/bootstrap/less/navs.less";
 @import "../bower_components/bootstrap/less/navbar.less";
 @import "../bower_components/bootstrap/less/breadcrumbs.less";
-@import "../bower_components/bootstrap/less/pagination.less";
+// @import "../bower_components/bootstrap/less/pagination.less";
 @import "../bower_components/bootstrap/less/pager.less";
 @import "../bower_components/bootstrap/less/labels.less";
 @import "../bower_components/bootstrap/less/badges.less";
@@ -43,7 +43,7 @@
 @import "../bower_components/bootstrap/less/modals.less";
 @import "../bower_components/bootstrap/less/tooltip.less";
 @import "../bower_components/bootstrap/less/popovers.less";
-@import "../bower_components/bootstrap/less/carousel.less";
+@import "./common/_carousel.less";
 
 // Utility classes
 @import "../bower_components/bootstrap/less/utilities.less";
@@ -55,8 +55,17 @@
 @import "./common/_footer";
 @import "./common/_detector";
 
+* {
+  *text-align: left;
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, '黑体', Arial, sans-serif !important;
+  *text-align: center;
+}
+
+ul {
+  *margin: 0;
 }
 
 a:hover, a.hover {
@@ -66,6 +75,22 @@ a:hover, a.hover {
 
 a:active, a.active {
   color: @link-color-active;
+  *background: none;
+}
+
+.container {
+  .clearfix();
+  width: @container + 30px;
+}
+
+.col-md-9 {
+  float: left;
+  width: 720px;
+}
+
+.col-md-3 {
+  float: left;
+  width: 240px;
 }
 
 .aside {
@@ -91,17 +116,26 @@ a:active, a.active {
 
   .recommendation {
     ul li {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      img {
+        width: 210px;
+      }
     }
   }
 
   .item-list {
     line-height: 35px;
-
+    ul {
+      margin: 0;
+    }
+    ul li {
+      *width: 100%;
+    }
     a {
       position: relative;
       display: block;
       padding: 0 40px;
+      height: 35px;
       &:before {
         position: absolute;
         left: 30px;
@@ -113,8 +147,13 @@ a:active, a.active {
         background-color: #808080;
       }
       &.active {
+        *zoom: 1;
         border-top: 1px solid @border-normal;
         border-bottom: 1px solid @border-normal;
+      }
+      &:hover {
+        color: @link-color-active;
+        background-color: transparent;
       }
     }
   }
@@ -147,6 +186,68 @@ a:active, a.active {
     padding-top: @day-padding-top;
     font-size: @day-font-size;
     background-color: @link-color-active;
+  }
+}
+
+.pagination {
+  .list-inline;
+  .inline-block();
+  padding-left: 0;
+  margin: @line-height-computed 0;
+
+  li {
+    display: inline; // Remove list-style and block-level defaults
+    a, span {
+      position: relative;
+      float: left; // Collapse white-space
+      padding: @padding-base-vertical @padding-base-horizontal;
+      line-height: @line-height-base;
+      text-decoration: none;
+      margin-left: -1px;
+    }
+  }
+
+  li {
+    .visuallyhidden, .sr-only {
+      position: absolute;
+    }
+  }
+
+  li {
+    a, span {
+      color: @text-color;
+
+      &:hover,
+      &:focus {
+        color: #fff;
+        background-color: @link-color-active;
+      }
+    }
+  }
+
+  .active {
+    a, span {
+      &,
+      &:hover,
+      &:focus {
+        color: #fff;
+        z-index: 2;
+        background-color: @link-color-active;
+        cursor: default;
+      }
+    }
+  }
+
+  .disabled {
+    a, span {
+      &,
+      &:hover,
+      &:focus {
+        color: @pagination-disabled-color;
+        background-color: @pagination-bg;
+        cursor: not-allowed;
+      }
+    }
   }
 }
 

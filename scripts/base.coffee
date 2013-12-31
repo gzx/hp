@@ -1,4 +1,59 @@
 
+do -> # shim console [[[
+  return if window.console?
+  console = window.console = {}
+  methods = """
+    log
+    dir
+    info
+    warn
+    error
+    debug
+    trace
+    count
+    assert
+    dirxml
+    exception
+    markTimeline
+    groupCollapsed
+    group
+    groupEnd
+    profile
+    profileEnd
+    time
+    timeEnd
+  """.split /\s/
+
+  for method in methods
+    console[method] = ->
+# ]]]
+
+do -> # config app [[[
+  appid = 793
+
+  window.reqconf =
+    urlRoot: "/api/apps/#{appid}"
+
+    appid: appid
+
+    imageProcesser: (url, width, height) ->
+      # 防止出现 base64 的图片
+      return url unless /^http(s)?:/.test url
+      # 防止出现其他站点的图片
+      return url unless /images\.(appatom|gezbox)\.com/.test url
+      "#{url}!#{width or ''}x#{height or ''}"
+
+    poilcyCategory: (categories) ->
+      for category in categories when category.name is '服务与政策'
+        return category.sub_categories
+      []
+
+    newsCategory: (categories) ->
+      for category in categories when category.name is '新闻中心'
+        return category.sub_categories
+      []
+# ]]]
+
 do -> # generatePagination [[[
     window.generatePagination = (baseUrl, maxPage, currentPage) ->
       maxPage or= 1
@@ -68,14 +123,20 @@ do -> # $tmpl [[[
 
     $tmplElemDataset = $tmplElem.data()
     resultHtml = Handlebars.compile($tmplElem.html()) data
-    $contents = $('<div>').html(resultHtml).contents()
+
+    $container = $('<div>').html resultHtml
+    if bowser.msie and bowser.version < 8
+      $container.find('[data-tmpl-unescape]').each (index, elem) ->
+        $elem = $ elem
+        unescapedHTML = $('<div>').html($elem.text()).html()
+        $elem.empty().html unescapedHTML
+    $contents = $container.contents()
 
     action = do ->
       for dataname, datavalue of $tmplElemDataset when /^tmpl[A-Z]/.test dataname
-        return {
-          method: dataname.replace(/^tmpl/, '').toLowerCase()
-          selector: datavalue
-        }
+        method = dataname.replace(/^tmpl/, '').toLowerCase()
+        continue if method is 'unescape'
+        return method: method, selector: datavalue
 
     if action
       $target = $ action.selector
@@ -108,6 +169,7 @@ do -> # requester [[[
           type: method
           data: data
           success: callback
+          cache: false
 
         if method is 'post'
           config.contentType = 'application/json'
@@ -155,63 +217,33 @@ do -> # config $tmpl [[[
   window.$tmpl.linkPage = (id) -> "page.html?id=#{id}"
 # ]]]
 
-do -> # config spin [[[
-  $.fn.spin = (options) ->
-    if options isnt false
-      options = $.extend {
-        color: '#555'
-        width: 4
-      }, options
-
-    @each (index, elem) =>
-      $elem = @eq index
-      spin = $elem.data('spin') or new Spinner options
-      if options is false
-        spin.stop()
-        $elem.removeData 'spin'
-      else
-        $elem.data 'spin', spin
-        spin.spin elem
-# ]]]
-
-do -> # config app [[[
-  appid = 793
-
-  window.reqconf =
-    urlRoot: "/api/apps/#{appid}"
-
-    appid: appid
-
-    imageProcesser: (url, width, height) ->
-      # 防止出现 base64 的图片
-      return url unless /^http(s)?:/.test url
-      # 防止出现其他站点的图片
-      return url unless /images\.(appatom|gezbox)\.com/.test url
-      "#{url}!#{width or ''}x#{height or ''}"
-
-    poilcyCategory: (categories) ->
-      for category in categories when category.name is '服务与政策'
-        return category.sub_categories
-      []
-
-    newsCategory: (categories) ->
-      for category in categories when category.name is '新闻中心'
-        return category.sub_categories
-      []
-# ]]]
-
 do ->
-  if bowser.c
-    $(".blur").removeClass "hide"
-    $(".warning").removeClass "hide"
-  else if bowser.msie and bowser.version < 10
-    $(".alert").removeClass "hide"
-    $("body").addClass "header-hold"
+  return unless bowser.c
+  $(".alert").detach().prependTo('body')
+  $(".alert").removeClass "hide"
+  $("body").on 'click', '.close', ->
+    $(".alert").remove()
 
-  $el = $(".alert .close")
-  $el.on "click", ->
-    $(".alert").addClass "hide"
-    $("body").removeClass "header-hold"
+do -> # config spin [[[
+  if bowser.msie and bowser.version < 8
+    $.fn.spin = -> this
+    return
+
+  spin = $.fn.spin
+  wrapper = (options, color) ->
+    if options isnt false
+      color or= '#555'
+      options or= {}
+      options.width or= 4
+    spin.call this, options, color
+  $.fn.spin = wrapper
+  wrapper.presets = spin.presets
+# ]]]
+
+do -> # add method momentFromISO [[[
+  window.momentFromISO = (time) ->
+    moment(time, 'YYYY-MM-DDTHH:mm:ssZZ')
+# ]]]
 
 
 

@@ -1,7 +1,15 @@
 @import '../_variables.less';
+@import '../_shortcut.less';
+
+.page-banner {
+  display: block;
+  padding: 50px auto;
+  width: 990px;
+  *text-align:center;
+}
 
 .poilcy-area {
-  padding: 30px;
+  padding: 30px 15px;
   border-top: 1px solid @border-normal;
   line-height: 35px;
 }
@@ -10,14 +18,14 @@
   padding-right: 50px;
   font-size: 18px;
 
-  > li {
+  li {
     border-bottom: 1px solid @border-normal;
-
-    > a {
+    *background: none;
+    a {
       display: block;
     }
 
-    &.active > a {
+    &.active a {
       color: @link-color-active;
     }
   }
@@ -42,6 +50,7 @@
         font-size: 24px;
         font-weight: 400;
         color: #9a9a9a;
+        *text-align:center;
       }
       p {
         color: #bbb;

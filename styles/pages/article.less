@@ -1,5 +1,6 @@
 @import "../../bower_components/bootstrap/less/variables.less";
-@import '../_variables';
+@import '../_variables.less';
+@import '../_shortcut.less';
 
 .col-md-9, .col-md-3 {
   padding: 0;
@@ -13,18 +14,21 @@
   margin-top: 60px;
 }
 
-
 .article-title {
-  display: inline-block;
-  margin-top: 0;
-  max-width: 590px;
-  font-weight: normal;
-  font-size: 24px;
-  color: @link-color-active;
+  h1 {
+    .inline-block();
+    margin-top: 0;
+    max-width: 590px;
+    font-weight: normal;
+    font-size: 24px;
+    color: @link-color-active;
+  }
 }
 
 article.col-md-9 {
   min-height: 300px;
+  *width: 720px;
+  *float: left;
 
   aside {
     margin-bottom: 20px;
@@ -41,6 +45,9 @@ article.col-md-9 {
 
     .list-inline {
       margin: 0;
+      li {
+        .inline-block();
+      }
     }
   }
 
@@ -48,6 +55,7 @@ article.col-md-9 {
     display: block;
     margin: 10px auto;
     max-width: 670px;
+    *width: 670px;
   }
 }
 
@@ -57,9 +65,9 @@ article.col-md-9 {
 
 .aside {
   .service-poilcy a {
-    display: inline-block;
+    .inline-block();
     padding-right: 20px;
-    background: url(../../images/article/service_poilcy.png) center right no-repeat;
+    background: url(../../images/article/service_poilcy.jpg) center right no-repeat;
   }
 }
 

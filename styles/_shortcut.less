@@ -17,3 +17,53 @@
     height: 150%;
   }
 }
+
+.inline-block() {
+  display: inline-block;
+  *display: inline; /* IE7 inline-block hack */
+  *zoom: 1;
+}
+
+.clearfix() {
+  *zoom: 1;
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.list-inline {
+  li {
+    .inline-block();
+  }
+}
+
+// hide only visually, but have it avaliable for screenreaders
+.visuallyhidden, .sr-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+
+  // Extends the .visuallyhidden class to allow the element to be focusable
+  // when navigated to via the keyboard
+  &.focusable:active,
+  &.focusable:focus {
+    position: static;
+    overflow: visible;
+    margin: 0;
+    width: auto;
+    height: auto;
+    clip: auto;
+  }
+}
+
+

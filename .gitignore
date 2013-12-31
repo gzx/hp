@@ -3,7 +3,6 @@
 nbproject
 manifest.mf
 build.xml
-public
 *.sw*
 
 .project
@@ -11,9 +10,12 @@ public
 .idea/*
 
 _public
+public
+tmp
 node_modules/*
 bower_components/*
 npm-debug.log
 
 test/test-results.xml
 deploy.log
+

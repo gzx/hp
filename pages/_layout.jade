@@ -1,61 +1,64 @@
+<!--[if lte IE 7]>
+<!-- This comment will put IE 6, 7 in quirks mode -->
+<![endif]-->
 !!!5
-head
-  meta(http-equiv="X-UA-Compatible", content="IE=edge")
-  meta(charset="UTF-8")
-  link(rel="shortcut icon", href="./images/share/hipark.ico")
+html
+  head
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(charset="UTF-8")
+    link(rel="shortcut icon", href="./images/share/hipark.ico")
+    block title
+      title HIPARK
 
-  block title
-    title HIPARK
+    block styles
+      link(rel="stylesheet", type="text/css", href="styles/base.css?rev=@@timestamp")
+      <!--[if lte IE 8]>
+      <script type="text/javascript" src="//cdn.staticfile.org/html5shiv/3.7/html5shiv-printshiv.min.js"></script>
+      <script type="text/javascript" src="//cdn.staticfile.org/html5shiv/3.7/html5shiv.min.js"></script>
+      <![endif]-->
 
-  block styles
-    link(rel="stylesheet", type="text/css", href="styles/base.css")
-    <!--[if lte IE 7]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script><![endif]--><!--[if lte IE 8]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-body
-  - var linkArticle = function linkArticle(id) { return "article.html?id=" + id }
-  - var linkPage = function linkPage(id) { return "page.html?id=" + id }
+  body
+    - var linkArticle = function linkArticle(id) { return "article.html?id=" + id }
+    - var linkPage = function linkPage(id) { return "page.html?id=" + id }
 
-  block content
+    block content
 
-  block detector
-    .blur.hide
-    .warning.hide
-      p.
-        您的浏览器版本过低，无法正常访问网站<br>
-        请升级到最新版本，或下载其他浏览器
-      ul.list-unstyled.list-inline
-        li
-          a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
-            img(src="./images/detector/chrome.png")
-            .media-body Chorme
-        li
-          a.media(href="http://chrome.360.cn/", target="_blank")
-            img(src="./images/detector/360.png")
-            .media-body 360极速
-        li
-          a.media(href="http://www.firefox.com.cn/", target="_blank")
-            img(src="./images/detector/firefox.png")
-            .media-body Firefox
-    .alert.hide
-      .wrap
+    block detector
+      .blur.hide
+      .warning.hide
         p.
-          您的浏览器版本过低，无法正常访问网站,请升级到最新版本，或下载其他浏览器
+          您的浏览器版本过低，无法正常访问网站<br>
+          请升级到最新版本，或下载其他浏览器
         ul.list-unstyled.list-inline
           li
             a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
-              img(src="./images/detector/chrome.png")
+              img(src="./images/detector/chrome.jpg")
+              .media-body Chorme
           li
             a.media(href="http://chrome.360.cn/", target="_blank")
-              img(src="./images/detector/360.png")
+              img(src="./images/detector/360.jpg")
+              .media-body 360极速
           li
             a.media(href="http://www.firefox.com.cn/", target="_blank")
-              img(src="./images/detector/firefox.png")
-        .close.pull-right
+              img(src="./images/detector/firefox.jpg")
+              .media-body Firefox
+      .alert.hide
+        .wrap
+          p.
+            您的浏览器版本过低，无法正常访问网站,请升级到最新版本，或下载其他浏览器
+          ul.list-unstyled.list-inline
+            li
+              a.media(href="http://www.google.cn/intl/zh-CN/chrome/browser/index.html", target="_blank")
+                img(src="./images/detector/chrome.jpg")
+            li
+              a.media(href="http://chrome.360.cn/", target="_blank")
+                img(src="./images/detector/360.jpg")
+            li
+              a.media(href="http://www.firefox.com.cn/", target="_blank")
+                img(src="./images/detector/firefox.jpg")
+          .close
 
-  block scripts
-    script(src="scripts/vendor.js")
-    script(src="scripts/base.js")
-
+    block scripts
+      script(src="scripts/vendor.js?rev=@@timestamp")
+      script(src="scripts/base.js?rev=@@timestamp")
 
