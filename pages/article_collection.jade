@@ -23,10 +23,7 @@ block content
 
     script(id='article', data-tmpl-html="article", type="text/template").
       <h1 class="article-title">{{name}}</h1>
-      <p class="article-meta">
-        <time>{{formatedPublishTime}}</time>
-      </p>
-      <div class="article-content" data-tmpl-unescape>{{{content}}}</div>
+      <div class="article-content" style="margin-top: 20px" data-tmpl-unescape>{{{content}}}</div>
 
     script(id="articleNotExist", data-tmpl-html="article", type="text/template").
       <p>文章不存在</p>
